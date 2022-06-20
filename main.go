@@ -35,174 +35,178 @@ func main() {
 		var price float64 = 0
 		var minPrice float64 = 999999999
 
-		msg += writeLog(fmt.Sprintf("B链鞋价"))
+		msg += fmt.Sprintf(`%s\n`, curTime)
+		msg += fmt.Sprintf(`👟鞋子数量\n`)
+		msg += fmt.Sprintf(`灰|`)
+
 		total = sneakerTotal(601, 1)
-		msg += writeLog(fmt.Sprintf("灰Walker数量：%d", total))
+		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 1)
-		msg += writeLog(fmt.Sprintf("灰Jogger数量：%d", total))
+		msg += fmt.Sprintf(`J(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 1)
-		msg += writeLog(fmt.Sprintf("灰Runner数量：%d", total))
+		msg += fmt.Sprintf(`R(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 1)
-		msg += writeLog(fmt.Sprintf("灰Trainer数量：%d", total))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%d) \n`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
+		msg += fmt.Sprintf(`绿|`)
 		total = sneakerTotal(601, 2)
-		msg += writeLog(fmt.Sprintf("绿Walker数量：%d", total))
+		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 2)
-		msg += writeLog(fmt.Sprintf("绿Jogger数量：%d", total))
+		msg += fmt.Sprintf(`J(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 2)
-		msg += writeLog(fmt.Sprintf("绿Runner数量：%d", total))
+		msg += fmt.Sprintf(`R(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 2)
-		msg += writeLog(fmt.Sprintf("绿Trainer数量：%d", total))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%d) \n`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
+		msg += fmt.Sprintf(`蓝|`)
 		total = sneakerTotal(601, 3)
-		msg += writeLog(fmt.Sprintf("蓝Walker数量：%d", total))
+		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 3)
-		msg += writeLog(fmt.Sprintf("蓝Jogger数量：%d", total))
+		msg += fmt.Sprintf(`J(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 3)
-		msg += writeLog(fmt.Sprintf("蓝Runner数量：%d", total))
+		msg += fmt.Sprintf(`R(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 3)
-		msg += writeLog(fmt.Sprintf("蓝Trainer数量：%d", total))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%d) \n`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
+		msg += fmt.Sprintf(`紫|`)
 		total = sneakerTotal(601, 4)
-		msg += writeLog(fmt.Sprintf("紫Walker数量：%d", total))
+		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 4)
-		msg += writeLog(fmt.Sprintf("紫Jogger数量：%d", total))
+		msg += fmt.Sprintf(`J(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 4)
-		msg += writeLog(fmt.Sprintf("紫Runner数量：%d", total))
+		msg += fmt.Sprintf(`R(%d) `, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 4)
-		msg += writeLog(fmt.Sprintf("紫Trainer数量：%d", total))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%d) \n`, total)
 		allTotal += total
+		msg += fmt.Sprintf(`总鞋数：%d`, allTotal)
+		msg += fmt.Sprintf(`----------\n`)
 
-		msg += writeLog(fmt.Sprintf("总鞋数：%d", allTotal))
-
+		// 卷轴
 		var scrollTotal = 0
 
-		msg += writeLog(fmt.Sprintf(""))
+		msg += fmt.Sprintf(`\n`)
+		msg += fmt.Sprintf(`📜卷轴数量`)
 		total = sneakerTotal(701, 1)
-		msg += writeLog(fmt.Sprintf("灰卷轴数量：%d", total))
+		msg += fmt.Sprintf(`灰：%d\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 2)
-		msg += writeLog(fmt.Sprintf("绿卷轴数量：%d", total))
+		msg += fmt.Sprintf(`绿：%d\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 3)
-		msg += writeLog(fmt.Sprintf("蓝卷轴数量：%d", total))
+		msg += fmt.Sprintf(`蓝：%d\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 4)
-		msg += writeLog(fmt.Sprintf("紫卷轴数量：%d", total))
+		msg += fmt.Sprintf(`紫：%d\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 5)
-		msg += writeLog(fmt.Sprintf("橙卷轴数量：%d", total))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`橙：%d\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
+		msg += fmt.Sprintf(`合计：%d\n`, scrollTotal)
+		msg += fmt.Sprintf(`----------\n`)
 
-		msg += writeLog(fmt.Sprintf("总卷轴数：%d", scrollTotal))
-
-		msg += writeLog(fmt.Sprintf(""))
-		msg += writeLog(fmt.Sprintf("B链地板价"))
+		msg += fmt.Sprintf(`\n`)
+		msg += fmt.Sprintf(`💰鞋子地板价(bnb)\n`)
+		msg += fmt.Sprintf(`灰|`)
 
 		price = floorPrice(601, 1)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("灰Walker地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 1)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("灰Jogger地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`J(%.2f) `, price)
 		price = floorPrice(603, 1)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("灰Runner地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`R(%.2f) `, price)
 		price = floorPrice(604, 1)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("灰Trainer地板价：%.2fbnb", price))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
+		msg += fmt.Sprintf(`绿|`)
 		price = floorPrice(601, 2)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("绿Walker地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 2)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("绿Jogger地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`J(%.2f) `, price)
 		price = floorPrice(603, 2)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("绿Runner地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`R(%.2f) `, price)
 		price = floorPrice(604, 2)
 		minPrice = comparePrice(minPrice, price)
-		msg += writeLog(fmt.Sprintf("绿Trainer地板价：%.2fbnb", price))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
+		msg += fmt.Sprintf(`蓝|`)
 		price = floorPrice(601, 3)
-		msg += writeLog(fmt.Sprintf("蓝Walker地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 3)
-		msg += writeLog(fmt.Sprintf("蓝Jogger地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`J(%.2f) `, price)
 		price = floorPrice(603, 3)
-		msg += writeLog(fmt.Sprintf("蓝Runner地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`R(%.2f) `, price)
 		price = floorPrice(604, 3)
-		msg += writeLog(fmt.Sprintf("蓝Trainer地板价：%.2fbnb", price))
-		msg += writeLog(fmt.Sprintf("----------"))
+		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
+		msg += fmt.Sprintf(`紫|`)
 		price = floorPrice(601, 4)
-		msg += writeLog(fmt.Sprintf("紫Walker地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 4)
-		msg += writeLog(fmt.Sprintf("紫Jogger地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`J(%.2f) `, price)
 		price = floorPrice(603, 4)
-		msg += writeLog(fmt.Sprintf("紫Runner地板价：%.2fbnb", price))
+		msg += fmt.Sprintf(`R(%.2f) `, price)
 		price = floorPrice(604, 4)
-		msg += writeLog(fmt.Sprintf("紫Trainer地板价：%.2fbnb", price))
-		msg += writeLog(fmt.Sprintf("----------"))
-		msg += writeLog(fmt.Sprintf("全网地板价：%.2fbnb", minPrice))
+		msg += fmt.Sprintf(`T(%.2f) `, price)
+		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
+		msg += fmt.Sprintf(`----------\n`)
 
 		go push(msg)
 
