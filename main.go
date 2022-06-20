@@ -177,7 +177,10 @@ func main() {
 		msg += fmt.Sprintf(`R %.2f｜`, price)
 		price = floorPrice(604, 4, 1000000)
 		msg += fmt.Sprintf(`T %.2f｜\n`, price)
-		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
+
+		rate = CalcRate("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
+		Insert("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
+		msg += fmt.Sprintf(`全网地板 %.2f ｜增幅 %s\n`, minPrice, rate)
 
 		// 卷轴
 		var scrollTotal = 0
@@ -240,7 +243,10 @@ func main() {
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
 
-		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
+		rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
+		Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
+
+		msg += fmt.Sprintf(`全网地板 %.2f｜增幅 %s\n`, minPrice, rate)
 
 		go push(msg)
 
