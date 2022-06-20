@@ -215,23 +215,23 @@ func main() {
 		msg += fmt.Sprintf(`————————————————\n`)
 
 		minPrice = 999999999
-		price = floorPrice(701, 1, 10000)
+		price = floorPrice(701, 1, 100)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`灰 %.2f｜`, price)
 
-		price = floorPrice(701, 2, 10000)
+		price = floorPrice(701, 2, 100)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`绿 %.2f｜`, price)
 
-		price = floorPrice(701, 3, 10000)
+		price = floorPrice(701, 3, 100)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`蓝 %.2f｜`, price)
 
-		price = floorPrice(701, 4, 10000)
+		price = floorPrice(701, 4, 100)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`紫 %.2f｜`, price)
 
-		price = floorPrice(701, 5, 10000)
+		price = floorPrice(701, 5, 100)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
 
