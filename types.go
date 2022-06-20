@@ -1,0 +1,23 @@
+package main
+
+type OrderList struct {
+	Code int     `json:"code"`
+	Data []*Shoe `json:"data"`
+}
+
+type Shoe struct {
+	ID        int    `json:"id"`
+	Otd       int    `json:"otd"`
+	Time      int    `json:"time"`
+	PropID    int    `json:"propID"`
+	Img       string `json:"img"`
+	DataID    int    `json:"dataID"`
+	SellPrice int    `json:"sellPrice"`
+	Hp        int    `json:"hp"`
+	Level     int    `json:"level"`
+	Quantity  int    `json:"quantity"`
+	Mint      int    `json:"mint"`
+	AddRatio  int    `json:"addRatio"`
+	V1        int    `json:"v1"`
+	V2        int    `json:"v2"`
+}
