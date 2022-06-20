@@ -27,7 +27,7 @@ func main() {
 
 	for {
 
-		curTime := fmt.Sprintf("\n%s", time.Now().Format("2006-01-02 15:04:05"))
+		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 		fmt.Println(curTime)
 		writeLog(curTime)
 		var allTotal, total = 0, 0
@@ -35,7 +35,7 @@ func main() {
 		var price float64 = 0
 		var minPrice float64 = 999999999
 
-		msg += fmt.Sprintf(`%s\n`, curTime)
+		//msg += fmt.Sprintf(`%s\n`, curTime)
 		msg += fmt.Sprintf(`👟鞋子数量\n`)
 		msg += fmt.Sprintf(`灰|`)
 
