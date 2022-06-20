@@ -226,7 +226,6 @@ func sneakerTotal(types int, quantity int) int {
 			break
 		}
 
-		fmt.Println(len(orderList.Data))
 		total += len(orderList.Data)
 
 		fmt.Print(".")
