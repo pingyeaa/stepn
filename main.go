@@ -41,26 +41,26 @@ func main() {
 		msg += fmt.Sprintf(`灰｜`)
 
 		total = sneakerTotal(601, 1)
-		msg += fmt.Sprintf(`W(%d) `, total)
+		msg += fmt.Sprintf(`W %d｜`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 1)
-		msg += fmt.Sprintf(`J(%d) `, total)
+		msg += fmt.Sprintf(`J %d｜`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 1)
-		msg += fmt.Sprintf(`R(%d) `, total)
+		msg += fmt.Sprintf(`R %d｜`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 1)
-		msg += fmt.Sprintf(`T(%d) \n`, total)
+		msg += fmt.Sprintf(`T %d｜ \n`, total)
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
-		msg += fmt.Sprintf(`绿|`)
+		msg += fmt.Sprintf(`绿｜`)
 		total = sneakerTotal(601, 2)
 		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
@@ -130,27 +130,27 @@ func main() {
 		msg += fmt.Sprintf(`📜卷轴数量\n`)
 		msg += fmt.Sprintf(`----------\n`)
 		total = sneakerTotal(701, 1)
-		msg += fmt.Sprintf(`灰：%d\n`, total)
+		msg += fmt.Sprintf(`灰（%d）`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 2)
-		msg += fmt.Sprintf(`绿：%d\n`, total)
+		msg += fmt.Sprintf(`绿（%d）`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 3)
-		msg += fmt.Sprintf(`蓝：%d\n`, total)
+		msg += fmt.Sprintf(`蓝（%d）`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 4)
-		msg += fmt.Sprintf(`紫：%d\n`, total)
+		msg += fmt.Sprintf(`紫（%d）`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 5)
-		msg += fmt.Sprintf(`橙：%d\n`, total)
+		msg += fmt.Sprintf(`橙（%d）\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 		msg += fmt.Sprintf(`合计：%d\n`, scrollTotal)
