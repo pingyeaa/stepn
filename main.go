@@ -37,7 +37,8 @@ func main() {
 
 		//msg += fmt.Sprintf(`%s\n`, curTime)
 		msg += fmt.Sprintf(`👟鞋子数量\n`)
-		msg += fmt.Sprintf(`灰|`)
+		msg += fmt.Sprintf(`----------\n`)
+		msg += fmt.Sprintf(`灰｜`)
 
 		total = sneakerTotal(601, 1)
 		msg += fmt.Sprintf(`W(%d) `, total)
@@ -80,7 +81,7 @@ func main() {
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
-		msg += fmt.Sprintf(`蓝|`)
+		msg += fmt.Sprintf(`蓝｜`)
 		total = sneakerTotal(601, 3)
 		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
@@ -101,7 +102,7 @@ func main() {
 		allTotal += total
 		time.Sleep(time.Second * 5)
 
-		msg += fmt.Sprintf(`紫|`)
+		msg += fmt.Sprintf(`紫｜`)
 		total = sneakerTotal(601, 4)
 		msg += fmt.Sprintf(`W(%d) `, total)
 		allTotal += total
@@ -120,14 +121,14 @@ func main() {
 		total = sneakerTotal(604, 4)
 		msg += fmt.Sprintf(`T(%d) \n`, total)
 		allTotal += total
-		msg += fmt.Sprintf(`总鞋数：%d`, allTotal)
-		msg += fmt.Sprintf(`----------\n`)
+		msg += fmt.Sprintf(`总鞋数：%d\n`, allTotal)
 
 		// 卷轴
 		var scrollTotal = 0
 
 		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`📜卷轴数量`)
+		msg += fmt.Sprintf(`📜卷轴数量\n`)
+		msg += fmt.Sprintf(`----------\n`)
 		total = sneakerTotal(701, 1)
 		msg += fmt.Sprintf(`灰：%d\n`, total)
 		scrollTotal += total
@@ -153,11 +154,11 @@ func main() {
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
 		msg += fmt.Sprintf(`合计：%d\n`, scrollTotal)
-		msg += fmt.Sprintf(`----------\n`)
 
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰鞋子地板价(bnb)\n`)
-		msg += fmt.Sprintf(`灰|`)
+		msg += fmt.Sprintf(`----------\n`)
+		msg += fmt.Sprintf(`灰｜`)
 
 		price = floorPrice(601, 1)
 		minPrice = comparePrice(minPrice, price)
@@ -172,7 +173,7 @@ func main() {
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
-		msg += fmt.Sprintf(`绿|`)
+		msg += fmt.Sprintf(`绿｜`)
 		price = floorPrice(601, 2)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`W(%.2f) `, price)
@@ -186,7 +187,7 @@ func main() {
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
-		msg += fmt.Sprintf(`蓝|`)
+		msg += fmt.Sprintf(`蓝｜`)
 		price = floorPrice(601, 3)
 		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 3)
@@ -196,7 +197,7 @@ func main() {
 		price = floorPrice(604, 3)
 		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 
-		msg += fmt.Sprintf(`紫|`)
+		msg += fmt.Sprintf(`紫｜`)
 		price = floorPrice(601, 4)
 		msg += fmt.Sprintf(`W(%.2f) `, price)
 		price = floorPrice(602, 4)
@@ -204,9 +205,8 @@ func main() {
 		price = floorPrice(603, 4)
 		msg += fmt.Sprintf(`R(%.2f) `, price)
 		price = floorPrice(604, 4)
-		msg += fmt.Sprintf(`T(%.2f) `, price)
+		msg += fmt.Sprintf(`T(%.2f) \n`, price)
 		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
-		msg += fmt.Sprintf(`----------\n`)
 
 		go push(msg)
 
