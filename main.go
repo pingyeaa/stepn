@@ -34,6 +34,7 @@ func main() {
 		var msg = ""
 		var price float64 = 0
 		var minPrice float64 = 999999999
+		var rate = ""
 
 		//msg += fmt.Sprintf(`%s\n`, curTime)
 		msg += fmt.Sprintf(`👟 鞋子数量\n`)
@@ -121,7 +122,9 @@ func main() {
 		total = sneakerTotal(604, 4)
 		msg += fmt.Sprintf(`T %d｜ \n`, total)
 		allTotal += total
-		msg += fmt.Sprintf(`总鞋数：%d\n`, allTotal)
+		rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
+		Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
+		msg += fmt.Sprintf(`总鞋数 %d｜增幅 %s｜\n`, allTotal, rate)
 
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
@@ -206,7 +209,9 @@ func main() {
 		msg += fmt.Sprintf(`橙 %d｜\n`, total)
 		scrollTotal += total
 		time.Sleep(time.Second * 5)
-		msg += fmt.Sprintf(`合计：%d\n`, scrollTotal)
+		rate = CalcRate("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
+		Insert("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
+		msg += fmt.Sprintf(`合计 %d｜增幅 %s｜\n`, scrollTotal, rate)
 
 		// 卷轴地板价
 

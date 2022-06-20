@@ -3,26 +3,47 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 )
 
-func StoreJson(filePath string, jsonStr string) {
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+func Insert(filePath string, value string) {
+	file, err := os.OpenFile(fmt.Sprintf("./db/%s", filePath), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		fmt.Println("文件打开失败", err)
 	}
 	defer file.Close()
 	write := bufio.NewWriter(file)
-	write.WriteString(jsonStr)
+	write.WriteString(value + "\n")
 	write.Flush()
 }
 
-func LoadJson(filePath string) (byte, error) {
-	file, err := os.OpenFile(filePath, os.O_RDONLY|os.O_CREATE, 0666)
+func FindLatest(filePath string) string {
+	file, err := os.OpenFile(fmt.Sprintf("./db/%s", filePath), os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		fmt.Println("文件打开失败", err)
+		log.Fatal(err)
 	}
 	defer file.Close()
-	reader := bufio.NewReader(file)
-	return reader.ReadByte()
+	var lineText string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lineText = scanner.Text()
+	}
+	return lineText
+}
+
+func CalcRate(filePath string, currentValue string) string {
+	value := FindLatest(filePath)
+	if value == "" {
+		return ""
+	}
+	if cur, err := strconv.ParseFloat(currentValue, 64); err == nil {
+		if s, err := strconv.ParseFloat(value, 64); err == nil {
+			diff := cur - s
+			return fmt.Sprintf("%.2f%%", diff/s*100)
+		}
+	}
+
+	return ""
 }
