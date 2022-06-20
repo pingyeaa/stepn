@@ -39,65 +39,80 @@ func main() {
 		total = sneakerTotal(601, 1)
 		msg += writeLog(fmt.Sprintf("灰Walker数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 1)
 		msg += writeLog(fmt.Sprintf("灰Jogger数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 1)
 		msg += writeLog(fmt.Sprintf("灰Runner数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 1)
 		msg += writeLog(fmt.Sprintf("灰Trainer数量：%d", total))
 		msg += writeLog(fmt.Sprintf("----------"))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(601, 2)
 		msg += writeLog(fmt.Sprintf("绿Walker数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 2)
 		msg += writeLog(fmt.Sprintf("绿Jogger数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 2)
 		msg += writeLog(fmt.Sprintf("绿Runner数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 2)
 		msg += writeLog(fmt.Sprintf("绿Trainer数量：%d", total))
 		msg += writeLog(fmt.Sprintf("----------"))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(601, 3)
 		msg += writeLog(fmt.Sprintf("蓝Walker数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 3)
 		msg += writeLog(fmt.Sprintf("蓝Jogger数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 3)
 		msg += writeLog(fmt.Sprintf("蓝Runner数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 3)
 		msg += writeLog(fmt.Sprintf("蓝Trainer数量：%d", total))
 		msg += writeLog(fmt.Sprintf("----------"))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(601, 4)
 		msg += writeLog(fmt.Sprintf("紫Walker数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(602, 4)
 		msg += writeLog(fmt.Sprintf("紫Jogger数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(603, 4)
 		msg += writeLog(fmt.Sprintf("紫Runner数量：%d", total))
 		allTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(604, 4)
 		msg += writeLog(fmt.Sprintf("紫Trainer数量：%d", total))
@@ -112,23 +127,28 @@ func main() {
 		total = sneakerTotal(701, 1)
 		msg += writeLog(fmt.Sprintf("灰卷轴数量：%d", total))
 		scrollTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 2)
 		msg += writeLog(fmt.Sprintf("绿卷轴数量：%d", total))
 		scrollTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 3)
 		msg += writeLog(fmt.Sprintf("蓝卷轴数量：%d", total))
 		scrollTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 4)
 		msg += writeLog(fmt.Sprintf("紫卷轴数量：%d", total))
 		scrollTotal += total
+		time.Sleep(time.Second * 5)
 
 		total = sneakerTotal(701, 5)
 		msg += writeLog(fmt.Sprintf("橙卷轴数量：%d", total))
 		msg += writeLog(fmt.Sprintf("----------"))
 		scrollTotal += total
+		time.Sleep(time.Second * 5)
 
 		msg += writeLog(fmt.Sprintf("总卷轴数：%d", scrollTotal))
 
