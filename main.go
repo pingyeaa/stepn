@@ -128,51 +128,51 @@ func main() {
 		msg += fmt.Sprintf(`————————————————\n`)
 		msg += fmt.Sprintf(`灰｜`)
 
-		price = floorPrice(601, 1)
+		price = floorPrice(601, 1, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 1)
+		price = floorPrice(602, 1, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 1)
+		price = floorPrice(603, 1, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 1)
+		price = floorPrice(604, 1, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`T %.2f｜ \n`, price)
 
 		msg += fmt.Sprintf(`绿｜`)
-		price = floorPrice(601, 2)
+		price = floorPrice(601, 2, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 2)
+		price = floorPrice(602, 2, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 2)
+		price = floorPrice(603, 2, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 2)
+		price = floorPrice(604, 2, 1000000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`T %.2f｜\n`, price)
 
 		msg += fmt.Sprintf(`蓝｜`)
-		price = floorPrice(601, 3)
+		price = floorPrice(601, 3, 1000000)
 		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 3)
+		price = floorPrice(602, 3, 1000000)
 		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 3)
+		price = floorPrice(603, 3, 1000000)
 		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 3)
+		price = floorPrice(604, 3, 1000000)
 		msg += fmt.Sprintf(`T %.2f｜\n`, price)
 
 		msg += fmt.Sprintf(`紫｜`)
-		price = floorPrice(601, 4)
+		price = floorPrice(601, 4, 1000000)
 		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 4)
+		price = floorPrice(602, 4, 1000000)
 		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 4)
+		price = floorPrice(603, 4, 1000000)
 		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 4)
+		price = floorPrice(604, 4, 1000000)
 		msg += fmt.Sprintf(`T %.2f｜\n`, price)
 		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
 
@@ -215,25 +215,25 @@ func main() {
 		msg += fmt.Sprintf(`————————————————\n`)
 
 		minPrice = 999999999
-		price = floorPrice(701, 1)
+		price = floorPrice(701, 1, 10000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`灰 %.2f｜`, price)
 
-		price = floorPrice(701, 2)
+		price = floorPrice(701, 2, 10000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`绿 %.2f｜`, price)
 
-		price = floorPrice(701, 3)
+		price = floorPrice(701, 3, 10000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`蓝 %.2f｜`, price)
 
-		price = floorPrice(701, 4)
+		price = floorPrice(701, 4, 10000)
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`紫 %.2f｜`, price)
 
-		price = floorPrice(701, 5)
+		price = floorPrice(701, 5, 10000)
 		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`橙 %.2f｜`, price)
+		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
 
 		msg += fmt.Sprintf(`全网地板：%.2f\n`, minPrice)
 
@@ -290,7 +290,7 @@ func sneakerTotal(types int, quantity int) int {
 	return total
 }
 
-func floorPrice(types int, quantity int) float64 {
+func floorPrice(types int, quantity int, zeroNum int) float64 {
 
 	time.Sleep(time.Second * 1)
 
@@ -325,7 +325,7 @@ func floorPrice(types int, quantity int) float64 {
 		return 0
 	}
 
-	price := float64(orderList.Data[0].SellPrice) / float64(1000000)
+	price := float64(orderList.Data[0].SellPrice) / float64(zeroNum)
 	fmt.Print(".")
 
 	return price
