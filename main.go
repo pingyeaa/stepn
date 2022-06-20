@@ -330,6 +330,7 @@ func writeLog(content string) string {
 
 func push(msg string) {
 	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
+	fmt.Println(string(content))
 	var url = fmt.Sprintf("https://discord.com/api/webhooks/987903832946262137/EG10I7wB5rCWxB7--auYlcnxRQtxdyIF7Z3Q3OQQfNdqv3qYyt4RQQA0tnqurQ92iSWE")
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(content))
 	if err != nil {
