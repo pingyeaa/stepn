@@ -293,7 +293,7 @@ func floorPrice(types int, quantity int) float64 {
 	}
 
 	price := float64(orderList.Data[0].SellPrice) / float64(1000000)
-	fmt.Println(price)
+	fmt.Print(".")
 
 	return price
 }
