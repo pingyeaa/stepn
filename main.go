@@ -262,7 +262,8 @@ func sneakerTotal(types int, quantity int) int {
 		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=104&page=%d&refresh=false", types, quantity, page)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
-			log.Fatalln(err.Error())
+			fmt.Println(err.Error())
+			return 0
 		}
 		req.Header.Set("cookie", cookie)
 		req.Header.Set("accept", "application/json")
@@ -283,7 +284,8 @@ func sneakerTotal(types int, quantity int) int {
 		err = json.Unmarshal(respByte, &orderList)
 		if err != nil {
 			fmt.Println(string(respByte))
-			log.Fatalln(err.Error())
+			fmt.Println(err.Error())
+			return 0
 		}
 
 		if orderList.Data == nil || len(orderList.Data) == 0 {
@@ -329,7 +331,8 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 	err = json.Unmarshal(respByte, &orderList)
 	if err != nil {
 		fmt.Println(string(respByte))
-		log.Fatalln(err.Error())
+		fmt.Println(err.Error())
+		return 0
 	}
 
 	if orderList.Data == nil || len(orderList.Data) == 0 {
