@@ -17,7 +17,7 @@ import (
 
 var conn *gorm.DB
 var err error
-var cookie = "SESSIONIDD2=8370526566976283480:1655796088799:177230; Path=/"
+var cookie = "SESSIONIDD2=5811092458795635217:1655806779339:73962; Path=/"
 
 func main() {
 
