@@ -96,12 +96,12 @@ func NumBelowTo(sneakers map[int]int) (string, int) {
 		return "", 0
 	}
 	minPrice := prices[0]
-	nextPrice := float64(minPrice) + 0.1*1000000
+	nextPrice := (minPrice + 0.1*1000000) / 100000 * 100000
 	var count = 0
 	for _, price := range prices {
-		if float64(price) < nextPrice {
+		if price < nextPrice {
 			count++
 		}
 	}
-	return fmt.Sprintf("%.2f", nextPrice/1000000), count
+	return fmt.Sprintf("%.2f", float64(nextPrice)/1000000), count
 }
