@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
+
+	"gopkg.in/fatih/set.v0"
 )
 
 func Insert(filePath string, value string) {
@@ -46,4 +49,42 @@ func CalcRate(filePath string, currentValue string) string {
 	}
 
 	return ""
+}
+
+func CalcDiffNumSneakers(old map[int]int, new map[int]int) (int, int, string, string) {
+	oldSet := set.New(set.ThreadSafe)
+	newSet := set.New(set.ThreadSafe)
+	for id, _ := range old {
+		oldSet.Add(id)
+	}
+	for id, _ := range new {
+		newSet.Add(id)
+	}
+	consumes := set.Difference(oldSet, newSet).List()
+	news := set.Difference(newSet, oldSet).List()
+	fmt.Println(consumes, news)
+
+	var totalPrice float64
+	for _, id := range news {
+		sid := id.(int)
+		price := float64(new[sid]) / 1000000
+		totalPrice += price
+	}
+	avgPrice := fmt.Sprintf("%.4f", totalPrice/float64(len(news)))
+
+	var middlePrice string
+	var priceList []int
+	for _, id := range news {
+		priceList = append(priceList, new[id.(int)])
+	}
+	sort.Ints(priceList)
+	fmt.Println(priceList)
+	for k, price := range priceList {
+		if k == len(priceList)/2 {
+			middlePrice = fmt.Sprintf("%.4f", float64(price)/1000000)
+		}
+	}
+
+	fmt.Println(len(news), len(consumes), avgPrice, middlePrice)
+	return len(news), len(consumes), avgPrice, middlePrice
 }

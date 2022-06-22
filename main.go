@@ -21,6 +21,8 @@ var conn *gorm.DB
 var err error
 var cookie = ""
 var cfg *ini.File
+var sneakerPrice = map[int]int{}
+var newSneakerPrice = map[int]int{}
 
 func main() {
 
@@ -138,7 +140,11 @@ func main() {
 		allTotal += total
 		rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
 		Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
-		msg += fmt.Sprintf(`总鞋数 %d｜增幅 %s｜\n`, allTotal, rate)
+
+		newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
+
+		msg += fmt.Sprintf(`总鞋数 %d｜增幅 %s \n`, allTotal, rate)
+		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d｜新增均价 %s｜新增中位价 %s \n`, newNum, oldNum, avgPrice, middlePrice)
 
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
@@ -264,6 +270,10 @@ func main() {
 
 		go push(msg)
 
+		// 给老的存起来，新的清空
+		sneakerPrice = newSneakerPrice
+		newSneakerPrice = map[int]int{}
+
 		time.Sleep(time.Second * 300)
 	}
 }
@@ -308,11 +318,19 @@ func sneakerTotal(types int, quantity int) int {
 
 		total += len(orderList.Data)
 
+		if types != 701 {
+			for _, data := range orderList.Data {
+				newSneakerPrice[data.Otd] = data.SellPrice
+			}
+		}
+
 		fmt.Print(".")
 
 		page++
 		time.Sleep(time.Second)
 	}
+
+	fmt.Println(newSneakerPrice)
 
 	return total
 }
