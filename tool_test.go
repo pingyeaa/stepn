@@ -37,3 +37,13 @@ func TestCalcDiffNumSneakers(t *testing.T) {
 	old, news, avg, middle := CalcDiffNumSneakers(a, b)
 	fmt.Println(old, news, avg, middle)
 }
+
+func TestNumBelowTo(t *testing.T) {
+	msg, price := NumBelowTo(map[int]int{
+		1: 90000000,
+		2: 800000,
+		3: 9300000,
+		4: 848000,
+	})
+	fmt.Println(msg, price)
+}

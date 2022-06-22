@@ -85,3 +85,23 @@ func CalcDiffNumSneakers(old map[int]int, new map[int]int) (int, int, string, st
 
 	return len(news), len(consumes), avgPrice, middlePrice
 }
+
+func NumBelowTo(sneakers map[int]int) (string, int) {
+	var prices []int
+	for _, price := range sneakers {
+		prices = append(prices, price)
+	}
+	sort.Ints(prices)
+	if len(prices) == 0 {
+		return "", 0
+	}
+	minPrice := prices[0]
+	nextPrice := float64(minPrice) + 0.1*1000000
+	var count = 0
+	for _, price := range prices {
+		if float64(price) < nextPrice {
+			count++
+		}
+	}
+	return fmt.Sprintf("%.2f", nextPrice/1000000), count
+}

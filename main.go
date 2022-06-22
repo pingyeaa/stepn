@@ -147,6 +147,9 @@ func main() {
 		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d \n`, newNum, oldNum)
 		msg += fmt.Sprintf(`新增均价 %s｜新增中位价 %s \n`, avgPrice, middlePrice)
 
+		p, num := NumBelowTo(newSneakerPrice)
+		msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
+
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
 		msg += fmt.Sprintf(`————————————————\n`)
