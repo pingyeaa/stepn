@@ -144,7 +144,8 @@ func main() {
 		newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
 
 		msg += fmt.Sprintf(`总鞋数 %d｜增幅 %s \n`, allTotal, rate)
-		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d｜新增均价 %s｜新增中位价 %s \n`, newNum, oldNum, avgPrice, middlePrice)
+		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d \n`, newNum, oldNum)
+		msg += fmt.Sprintf(`新增均价 %s｜新增中位价 %s \n`, avgPrice, middlePrice)
 
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
