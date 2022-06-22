@@ -330,8 +330,6 @@ func sneakerTotal(types int, quantity int) int {
 		time.Sleep(time.Second)
 	}
 
-	fmt.Println(newSneakerPrice)
-
 	return total
 }
 

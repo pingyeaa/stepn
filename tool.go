@@ -62,7 +62,6 @@ func CalcDiffNumSneakers(old map[int]int, new map[int]int) (int, int, string, st
 	}
 	consumes := set.Difference(oldSet, newSet).List()
 	news := set.Difference(newSet, oldSet).List()
-	fmt.Println(consumes, news)
 
 	var totalPrice float64
 	for _, id := range news {
@@ -78,13 +77,11 @@ func CalcDiffNumSneakers(old map[int]int, new map[int]int) (int, int, string, st
 		priceList = append(priceList, new[id.(int)])
 	}
 	sort.Ints(priceList)
-	fmt.Println(priceList)
 	for k, price := range priceList {
 		if k == len(priceList)/2 {
 			middlePrice = fmt.Sprintf("%.4f", float64(price)/1000000)
 		}
 	}
 
-	fmt.Println(len(news), len(consumes), avgPrice, middlePrice)
 	return len(news), len(consumes), avgPrice, middlePrice
 }
