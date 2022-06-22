@@ -264,7 +264,7 @@ func main() {
 
 		go push(msg)
 
-		time.Sleep(time.Second * 600)
+		time.Sleep(time.Second * 300)
 	}
 }
 
