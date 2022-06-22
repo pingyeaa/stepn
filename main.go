@@ -11,15 +11,29 @@ import (
 	"os"
 	"time"
 
+	"gopkg.in/ini.v1"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
 var conn *gorm.DB
 var err error
-var cookie = "SESSIONIDD2=5811092458795635217:1655806779339:73962; Path=/"
+var cookie = ""
+var cfg *ini.File
 
 func main() {
+
+	cfg, err = ini.Load("config.ini")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	key, err := cfg.Section("stepn").GetKey("cookie")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	cookie = key.String()
 
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=NH5PB87Pgm5PbFxPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbX7FsIvhBo5Qbmvh8y7Q2D5PBrbQ68bhbX7FkPbQ387QBo5lVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=sH5PB87Pgm5PbFdPuKbPBR5l38vPBhWPuIWhBrAPvPbhbV7FsIvhBo5QbFvh8y7Q2D5PBrbQv8bhbX7FvPbQ3f7QBo5QVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
@@ -372,10 +386,15 @@ func writeLog(content string) string {
 }
 
 func push(msg string) {
+
+	webhook, err := cfg.Section("discord").GetKey("webhook")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
 	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
 	fmt.Println(string(content))
-	var url = fmt.Sprintf("https://discord.com/api/webhooks/987903832946262137/EG10I7wB5rCWxB7--auYlcnxRQtxdyIF7Z3Q3OQQfNdqv3qYyt4RQQA0tnqurQ92iSWE")
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(content))
+	req, err := http.NewRequest("POST", webhook.String(), bytes.NewBuffer(content))
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
