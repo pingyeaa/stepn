@@ -158,5 +158,5 @@ func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) string {
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice
 	log.Println(gstPrice)
 	profit := sneakerFloor*0.94 - total
-	return fmt.Sprintf("%.2f*0.94-(%.4f*360+%.4f*40+%.4f*2*%.2f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, profit)
+	return fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, profit)
 }
