@@ -109,18 +109,18 @@ func NumBelowTo(sneakers map[int]int) (string, int) {
 	return fmt.Sprintf("%.2f", float64(nextPrice)/1000000), count
 }
 
-func GetTokenPrice(address string) float64 {
+func GetTokenPrice(address string) (float64, float64) {
 	url := fmt.Sprintf("https://api.pancakeswap.info/api/v2/tokens/%s", address)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println(err.Error())
-		return 0
+		return 0, 0
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
 	if err != nil {
 		log.Println(err.Error())
-		return 0
+		return 0, 0
 	}
 	var data struct {
 		Data struct {
@@ -133,28 +133,34 @@ func GetTokenPrice(address string) float64 {
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		log.Println(err.Error())
-		return 0
+		return 0, 0
 	}
-	price, err := strconv.ParseFloat(data.Data.PriceBnb, 64)
+	price, err := strconv.ParseFloat(data.Data.Price, 64)
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		log.Println(err.Error())
-		return 0
+		return 0, 0
 	}
-	return price
+	priceBnb, err := strconv.ParseFloat(data.Data.PriceBnb, 64)
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		log.Println(err.Error())
+		return 0, 0
+	}
+	return price, priceBnb
 }
 
-func GSTPriceForBSC() float64 {
+func GSTPriceForBSC() (float64, float64) {
 	return GetTokenPrice("0x4a2c860cec6471b9f5f5a336eb4f38bb21683c98")
 }
 
-func GMTPriceForBSC() float64 {
+func GMTPriceForBSC() (float64, float64) {
 	return GetTokenPrice("0x3019bf2a2ef8040c242c9a4c5c4bd4c81678b2a1")
 }
 
 func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) string {
-	gstPrice := GSTPriceForBSC()
-	gmtPrice := GMTPriceForBSC()
+	_, gstPrice := GSTPriceForBSC()
+	_, gmtPrice := GMTPriceForBSC()
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice
 	log.Println(gstPrice)
 	profit := sneakerFloor*0.94 - total

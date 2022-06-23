@@ -250,6 +250,7 @@ func main() {
 		minPrice = 999999999
 		price = floorPrice(701, 1, 100)
 		minPrice = comparePrice(minPrice, price)
+		scrollMinPrice := minPrice
 		msg += fmt.Sprintf(`灰 %.2f｜`, price)
 
 		price = floorPrice(701, 2, 100)
@@ -268,8 +269,6 @@ func main() {
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
 
-		scrollMinPrice := minPrice
-
 		rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 		Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 
@@ -278,7 +277,11 @@ func main() {
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
 		msg += fmt.Sprintf(`————————————————\n`)
+		gstPrice, gstBnb := GSTPriceForBSC()
+		gmtPrice, gmtBnb := GMTPriceForBSC()
 		profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
+		msg += fmt.Sprintf(`1GST = %.4fusdc = %.4fb \n`, gstPrice, gstBnb)
+		msg += fmt.Sprintf(`1GMT = %.4fusdc = %.4fb \n`, gmtPrice, gmtBnb)
 		msg += fmt.Sprintf(`%s\n`, profit)
 
 		go push(msg)
