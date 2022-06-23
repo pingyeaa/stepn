@@ -110,7 +110,8 @@ func NumBelowTo(sneakers map[int]int) (string, int) {
 }
 
 func GetTokenPrice(address string) (float64, float64) {
-	url := fmt.Sprintf("https://api.pancakeswap.info/api/v2/tokens/%s", address)
+	url := fmt.Sprintf("https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?contract_addresses=%s&vs_currencies=bnb%%2Cusd", address)
+	//url := fmt.Sprintf("https://api.pancakeswap.info/api/v2/tokens/%s", address)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println(err.Error())
@@ -122,31 +123,14 @@ func GetTokenPrice(address string) (float64, float64) {
 		log.Println(err.Error())
 		return 0, 0
 	}
-	var data struct {
-		Data struct {
-			Name     string
-			Symbol   string
-			Price    string
-			PriceBnb string `json:"price_BNB"`
-		}
-	}
+	var data = map[string]map[string]float64{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		log.Println(err.Error())
 		return 0, 0
 	}
-	price, err := strconv.ParseFloat(data.Data.Price, 64)
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		log.Println(err.Error())
-		return 0, 0
-	}
-	priceBnb, err := strconv.ParseFloat(data.Data.PriceBnb, 64)
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		log.Println(err.Error())
-		return 0, 0
-	}
+	price := data[address]["usd"]
+	priceBnb := data[address]["bnb"]
 	return price, priceBnb
 }
 

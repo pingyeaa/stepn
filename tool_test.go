@@ -50,8 +50,8 @@ func TestNumBelowTo(t *testing.T) {
 }
 
 func TestGSTPriceForBSC(t *testing.T) {
-	price := GSTPriceForBSC()
-	log.Println(price)
+	price, pricebnb := GMTPriceForBSC()
+	log.Println(price, pricebnb)
 }
 
 func TestCalcMintProfitForBSC(t *testing.T) {

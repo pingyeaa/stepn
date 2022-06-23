@@ -280,8 +280,8 @@ func main() {
 		gstPrice, gstBnb := GSTPriceForBSC()
 		gmtPrice, gmtBnb := GMTPriceForBSC()
 		profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
-		msg += fmt.Sprintf(`1GST = %.4fusdc = %.4fb \n`, gstPrice, gstBnb)
-		msg += fmt.Sprintf(`1GMT = %.4fusdc = %.4fb \n`, gmtPrice, gmtBnb)
+		msg += fmt.Sprintf(`1BGST = %.4fU = %.4fBNB \n`, gstPrice, gstBnb)
+		msg += fmt.Sprintf(`1GMT = %.4fU = %.4fBNB \n`, gmtPrice, gmtBnb)
 		msg += fmt.Sprintf(`%s\n`, profit)
 
 		go push(msg)
