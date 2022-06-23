@@ -205,6 +205,7 @@ func main() {
 		rate = CalcRate("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
 		Insert("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
 		msg += fmt.Sprintf(`全网地板 %.2f ｜增幅 %s\n`, minPrice, rate)
+		sneakerMinPrice := minPrice
 
 		// 卷轴
 		var scrollTotal = 0
@@ -267,10 +268,18 @@ func main() {
 		minPrice = comparePrice(minPrice, price)
 		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
 
+		scrollMinPrice := minPrice
+
 		rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 		Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 
 		msg += fmt.Sprintf(`全网地板 %.2f｜增幅 %s\n`, minPrice, rate)
+
+		msg += fmt.Sprintf(`\n`)
+		msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
+		msg += fmt.Sprintf(`————————————————\n`)
+		profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
+		msg += fmt.Sprintf(`%s\n`, profit)
 
 		go push(msg)
 

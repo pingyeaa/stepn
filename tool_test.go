@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"testing"
 )
 
@@ -46,4 +47,13 @@ func TestNumBelowTo(t *testing.T) {
 		4: 2320000,
 	})
 	fmt.Println(msg, price)
+}
+
+func TestGSTPriceForBSC(t *testing.T) {
+	price := GSTPriceForBSC()
+	log.Println(price)
+}
+
+func TestCalcMintProfitForBSC(t *testing.T) {
+	log.Println(CalcMintProfitForBSC(1.37, 62))
 }
