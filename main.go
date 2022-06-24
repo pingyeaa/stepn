@@ -327,6 +327,7 @@ func main() {
 		newSneakerPriceByte, _ := json.Marshal(newSneakerPrice)
 		Rewrite("sneaker-price.txt", string(newSneakerPriceByte))
 		newSneakerPrice = map[int]int{}
+		sneakerPrice = map[int]int{}
 
 		if chain == "104" {
 			chain = "103"
