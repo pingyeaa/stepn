@@ -250,7 +250,7 @@ func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) (float64, f
 	gstPrice, _ := GSTPriceForBSC()
 	gmtPrice, _ := GMTPriceForBSC()
 	bnbPrice := BnbPrice()
-	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
+	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice + 20*gstPrice + 10*gmtPrice
 	profit := sneakerFloor*bnbPrice*0.94 - total
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, bnbPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
@@ -259,7 +259,7 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 	gstPrice := GSTPriceForSol()
 	gmtPrice := GMTPriceForSol()
 	solPrice := SolPrice()
-	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
+	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice + 20*gstPrice + 10*gmtPrice
 	profit := sneakerFloor*solPrice*0.94 - total
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, solPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
