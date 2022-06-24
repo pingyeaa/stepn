@@ -338,7 +338,12 @@ func main() {
 
 		// 推创世
 		genesMsg := GenesShoes()
-		pushToGenes(genesMsg)
+		if len(genesMsg) > 2000 {
+			pushToGenes(genesMsg[:2000])
+			pushToGenes(genesMsg[2000:])
+		} else {
+			pushToGenes(genesMsg)
+		}
 
 		time.Sleep(time.Second * 5)
 
@@ -394,6 +399,9 @@ func sneakerTotal(types int, quantity int) int {
 		if types != 701 {
 			for _, data := range orderList.Data {
 				newSneakerPrice[data.Otd] = data.SellPrice
+				if data.Otd == 9999 {
+					fmt.Println("find you", data.Otd, data.SellPrice)
+				}
 				if chain == "103" && data.Otd < 10000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
