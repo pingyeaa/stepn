@@ -199,6 +199,29 @@ func GetTokenPriceForSol(address string) float64 {
 	return price
 }
 
+func GetCoinPrice(name string) float64 {
+	url := fmt.Sprintf("https://api.coingecko.com/api/v3/simple/price?ids=%s&vs_currencies=usd", name)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	log.Println(string(body))
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	var data = map[string]map[string]float64{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	price := data[name]["usd"]
+	return price
+}
+
 func GSTPriceForBSC() (float64, float64) {
 	return GetTokenPriceForBSC("0x4a2c860cec6471b9f5f5a336eb4f38bb21683c98")
 }
@@ -215,18 +238,28 @@ func GMTPriceForSol() float64 {
 	return GetTokenPriceForSol("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx")
 }
 
+func BnbPrice() float64 {
+	return GetCoinPrice("binancecoin")
+}
+
+func SolPrice() float64 {
+	return GetCoinPrice("solana")
+}
+
 func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
 	gstPrice, _ := GSTPriceForBSC()
 	gmtPrice, _ := GMTPriceForBSC()
+	bnbPrice := BnbPrice()
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
-	profit := sneakerFloor*0.94 - total
+	profit := sneakerFloor*bnbPrice*0.94 - total
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
 
 func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
 	gstPrice := GSTPriceForSol()
 	gmtPrice := GMTPriceForSol()
+	solPrice := SolPrice()
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
-	profit := sneakerFloor*0.94 - total
+	profit := sneakerFloor*solPrice*0.94 - total
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
