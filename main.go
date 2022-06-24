@@ -52,6 +52,7 @@ func main() {
 	for {
 
 		newSneakerPrice = map[int]int{}
+		genesShoes = []*Shoe{}
 
 		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 		fmt.Println(curTime)

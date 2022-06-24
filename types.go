@@ -16,7 +16,7 @@ type Shoe struct {
 	SellPrice int    `json:"sellPrice"`
 	Hp        int    `json:"hp"`
 	Level     int    `json:"level"`
-	Quantity  int    `json:"quantity"`
+	Quantity  int    `json:"quality"`
 	Mint      int    `json:"mint"`
 	AddRatio  int    `json:"addRatio"`
 	V1        int    `json:"v1"`

@@ -270,11 +270,11 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 func GenesShoes() string {
 	msg := ""
 	if chain == "104" {
-		msg += `👟 创世数据（BSC）\n`
+		msg += `👑 创世数据（BSC）\n`
 		msg += `————————————————\n`
 	}
 	if chain == "103" {
-		msg += `👟 创世数据（Sol）\n`
+		msg += `️👑 创世数据（Sol）\n`
 		msg += `————————————————\n`
 	}
 
@@ -337,6 +337,7 @@ func GenesShoes() string {
 		}
 	}
 
+	msg += `————————————————\n`
 	msg += fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd))
 
 	prevTotalValue := FindLatest("genes-total.txt")
@@ -346,7 +347,11 @@ func GenesShoes() string {
 		msg += fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate)
 	}
 
-	msg += fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName)
+	if len(genesShoes) == 0 {
+		msg += fmt.Sprintf(`地板价：0%s`, unitName)
+	} else {
+		msg += fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName)
+	}
 
 	return msg
 }
