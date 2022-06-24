@@ -299,7 +299,7 @@ func main() {
 		msg += fmt.Sprintf(`\n`)
 
 		if chain == "104" {
-			msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
+			msg += fmt.Sprintf(`💰 Mint利润（usd）\n`)
 			msg += fmt.Sprintf(`————————————————\n`)
 			gstPrice, gmtPrice, profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
 			msg += fmt.Sprintf(`1BGST = %.4fU \n`, gstPrice)
@@ -329,13 +329,13 @@ func main() {
 		newSneakerPrice = map[int]int{}
 		sneakerPrice = map[int]int{}
 
+		time.Sleep(time.Second * 5)
+
 		if chain == "104" {
 			chain = "103"
 		} else {
 			chain = "104"
 		}
-
-		time.Sleep(time.Second * 5)
 	}
 }
 
