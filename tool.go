@@ -40,9 +40,12 @@ func FindLatest(filePath string) string {
 }
 
 func Rewrite(filePath string, value string) {
-	file, err := os.OpenFile(fmt.Sprintf("./db/%s-%s", chain, filePath), os.O_WRONLY|os.O_CREATE, 0666)
+	name := fmt.Sprintf("./db/%s-%s", chain, filePath)
+	_ = os.Remove(name)
+	file, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Println("文件打开失败", err)
+		return
 	}
 	defer file.Close()
 	write := bufio.NewWriter(file)
@@ -262,4 +265,88 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice + 20*gstPrice + 10*gmtPrice
 	profit := sneakerFloor*solPrice*0.94 - total
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, solPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
+}
+
+func GenesShoes() string {
+	msg := ""
+	if chain == "104" {
+		msg += `👟 创世数据（BSC）\n`
+		msg += `————————————————\n`
+	}
+	if chain == "103" {
+		msg += `👟 创世数据（Sol）\n`
+		msg += `————————————————\n`
+	}
+
+	var genesOtd []int
+	for _, shoe := range genesShoes {
+		genesOtd = append(genesOtd, shoe.Otd)
+	}
+	sort.Ints(genesOtd)
+
+	var minPrice = 999999999999
+
+	unitName := ""
+	if chain == "104" {
+		unitName = "BNB"
+	}
+	if chain == "103" {
+		unitName = "Sol"
+	}
+
+	for _, otd := range genesOtd {
+		for _, shoe := range genesShoes {
+			if otd == shoe.Otd {
+				color := ""
+				if shoe.Quantity == 1 {
+					color = "灰"
+				}
+				if shoe.Quantity == 2 {
+					color = "绿"
+				}
+				if shoe.Quantity == 3 {
+					color = "蓝"
+				}
+				if shoe.Quantity == 4 {
+					color = "紫"
+				}
+				if shoe.Quantity == 5 {
+					color = "橙"
+				}
+
+				typeName := ""
+				if shoe.TypeID == 601 {
+					typeName = "W"
+				}
+				if shoe.TypeID == 602 {
+					typeName = "J"
+				}
+				if shoe.TypeID == 603 {
+					typeName = "R"
+				}
+				if shoe.TypeID == 604 {
+					typeName = "T"
+				}
+
+				if minPrice > shoe.SellPrice {
+					minPrice = shoe.SellPrice
+				}
+
+				msg += fmt.Sprintf(`#%d：%s%s，LV%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Mint, shoe.Level, float64(shoe.SellPrice)/1000000, unitName)
+			}
+		}
+	}
+
+	msg += fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd))
+
+	prevTotalValue := FindLatest("genes-total.txt")
+	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
+		rate := CalcRate("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
+		Insert("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
+		msg += fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate)
+	}
+
+	msg += fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName)
+
+	return msg
 }

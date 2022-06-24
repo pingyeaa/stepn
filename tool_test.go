@@ -70,5 +70,37 @@ func TestGetFileContent(t *testing.T) {
 	//a := GetFileContent("abc1.txt")
 	//_ = json.Unmarshal([]byte(a), &test)
 	//fmt.Println(test[1])
-	fmt.Println(BnbPrice(), SolPrice())
+	//fmt.Println(BnbPrice(), SolPrice())
+
+	genesShoes = append(genesShoes, &Shoe{
+		ID:        1,
+		TypeID:    601,
+		Otd:       1234,
+		SellPrice: 9999999,
+		Level:     5,
+		Quantity:  1,
+		Mint:      2,
+	})
+
+	genesShoes = append(genesShoes, &Shoe{
+		ID:        2,
+		TypeID:    603,
+		Otd:       1235,
+		SellPrice: 2999999,
+		Level:     5,
+		Quantity:  1,
+		Mint:      2,
+	})
+
+	genesShoes = append(genesShoes, &Shoe{
+		ID:        3,
+		TypeID:    601,
+		Otd:       1034,
+		SellPrice: 9999999,
+		Level:     3,
+		Quantity:  1,
+		Mint:      0,
+	})
+	res := GenesShoes()
+	log.Print(res)
 }

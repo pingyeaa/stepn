@@ -24,6 +24,7 @@ var cfg *ini.File
 var sneakerPrice = map[int]int{}
 var newSneakerPrice = map[int]int{}
 var chain = "104"
+var genesShoes []*Shoe
 
 func main() {
 
@@ -49,6 +50,8 @@ func main() {
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=vH5PB87Pgm5PbFdPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbD7FsIvhBo5QbFvh8y7Q2D5PBrbQu8bhbX7FxPbQ3P7QBoxQVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
 
 	for {
+
+		newSneakerPrice = map[int]int{}
 
 		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 		fmt.Println(curTime)
@@ -332,6 +335,10 @@ func main() {
 		newSneakerPrice = map[int]int{}
 		sneakerPrice = map[int]int{}
 
+		// 推创世
+		genesMsg := GenesShoes()
+		pushToGenes(genesMsg)
+
 		time.Sleep(time.Second * 5)
 
 		if chain == "104" {
@@ -386,6 +393,10 @@ func sneakerTotal(types int, quantity int) int {
 		if types != 701 {
 			for _, data := range orderList.Data {
 				newSneakerPrice[data.Otd] = data.SellPrice
+				if data.Otd < 10000 {
+					data.TypeID = types
+					genesShoes = append(genesShoes, data)
+				}
 			}
 		}
 
@@ -481,6 +492,27 @@ func push(msg string) {
 		}
 	}
 
+	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
+	fmt.Println(string(content))
+	req, err := http.NewRequest("POST", webhook.String(), bytes.NewBuffer(content))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := (&http.Client{}).Do(req)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	defer resp.Body.Close()
+	respByte, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(respByte))
+}
+
+func pushToGenes(msg string) {
+	webhook, err := cfg.Section("discord").GetKey("genes_webhook")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
 	fmt.Println(string(content))
 	req, err := http.NewRequest("POST", webhook.String(), bytes.NewBuffer(content))
