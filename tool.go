@@ -332,11 +332,14 @@ func GenesShoes() string {
 					minPrice = shoe.SellPrice
 				}
 
-				msg += fmt.Sprintf(`#%d：%s%s，LV%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Mint, shoe.Level, float64(shoe.SellPrice)/1000000, unitName)
+				msg += fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 			}
 		}
 	}
 
+	if len(genesShoes) == 0 {
+		msg += `暂无数据\n`
+	}
 	msg += `————————————————\n`
 	msg += fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd))
 
