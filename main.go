@@ -301,11 +301,12 @@ func main() {
 		if chain == "104" {
 			msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
 			msg += fmt.Sprintf(`————————————————\n`)
-			gstPrice, gstBnb := GSTPriceForBSC()
-			gmtPrice, gmtBnb := GMTPriceForBSC()
-			profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
-			msg += fmt.Sprintf(`1BGST = %.4fU = %.4fBNB \n`, gstPrice, gstBnb)
-			msg += fmt.Sprintf(`1GMT = %.4fU = %.4fBNB \n`, gmtPrice, gmtBnb)
+			gstPrice, gmtPrice, profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
+			msg += fmt.Sprintf(`1BGST = %.4fU \n`, gstPrice)
+			msg += fmt.Sprintf(`1GMT = %.4fU \n`, gmtPrice)
+			msg += fmt.Sprintf(`mint费用 = %.4fU \n`, 360*gstPrice+40*gmtPrice)
+			msg += fmt.Sprintf(`卷轴费用 = %.4fU \n`, scrollMinPrice*gmtPrice*2)
+			msg += fmt.Sprintf(`升级费用 = %.4fU \n`, 20*gstPrice+10*gmtPrice)
 			msg += fmt.Sprintf(`%s\n`, profit)
 		} else {
 			msg += fmt.Sprintf(`💰 Mint利润（usd）\n`)
@@ -320,7 +321,7 @@ func main() {
 		}
 
 		fmt.Println(msg)
-		go push(msg)
+		push(msg)
 
 		// 给老的存起来，新的清空
 		newSneakerPriceByte, _ := json.Marshal(newSneakerPrice)

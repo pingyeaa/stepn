@@ -215,12 +215,12 @@ func GMTPriceForSol() float64 {
 	return GetTokenPriceForSol("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx")
 }
 
-func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) string {
-	_, gstPrice := GSTPriceForBSC()
-	_, gmtPrice := GMTPriceForBSC()
+func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
+	gstPrice, _ := GSTPriceForBSC()
+	gmtPrice, _ := GMTPriceForBSC()
 	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
 	profit := sneakerFloor*0.94 - total
-	return fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
+	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
 
 func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
