@@ -320,6 +320,9 @@ func main() {
 			msg += fmt.Sprintf(`%s\n`, profit)
 		}
 
+		msg += fmt.Sprintf(`\n`)
+		msg += fmt.Sprintf(`PS：数据存在误差，仅供参考，非投资建议 \n`)
+
 		fmt.Println(msg)
 		push(msg)
 
