@@ -268,7 +268,7 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 }
 
 func GenesShoes() string {
-	msg := ""
+	msg := `\n`
 	if chain == "104" {
 		msg += `👑 创世数据（BSC）\n`
 		msg += `————————————————\n`

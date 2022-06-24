@@ -394,7 +394,11 @@ func sneakerTotal(types int, quantity int) int {
 		if types != 701 {
 			for _, data := range orderList.Data {
 				newSneakerPrice[data.Otd] = data.SellPrice
-				if data.Otd < 10000 {
+				if chain == "103" && data.Otd < 10000 {
+					data.TypeID = types
+					genesShoes = append(genesShoes, data)
+				}
+				if chain == "104" && data.Otd < 20000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
 				}
