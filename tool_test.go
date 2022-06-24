@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"testing"
@@ -55,5 +56,19 @@ func TestGSTPriceForBSC(t *testing.T) {
 }
 
 func TestCalcMintProfitForBSC(t *testing.T) {
-	log.Println(CalcMintProfitForBSC(1.37, 62))
+	//log.Println(CalcMintProfitForBSC(1.37, 62))
+	fmt.Println("sol gst, gmt", GSTPriceForSol(), GMTPriceForSol())
+}
+
+func TestGetFileContent(t *testing.T) {
+	var test = map[int]int{
+		1: 2,
+		2: 2,
+		3: 2,
+	}
+	content, _ := json.Marshal(test)
+	Rewrite("abc1.txt", string(content))
+	a := GetFileContent("abc1.txt")
+	_ = json.Unmarshal([]byte(a), &test)
+	fmt.Println(test[1])
 }

@@ -23,6 +23,7 @@ var cookie = ""
 var cfg *ini.File
 var sneakerPrice = map[int]int{}
 var newSneakerPrice = map[int]int{}
+var chain = "104"
 
 func main() {
 
@@ -36,6 +37,12 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 	cookie = key.String()
+
+	//key, err = cfg.Section("stepn").GetKey("chain")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	//chain = key.String()
 
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=NH5PB87Pgm5PbFxPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbX7FsIvhBo5Qbmvh8y7Q2D5PBrbQ68bhbX7FkPbQ387QBo5lVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=sH5PB87Pgm5PbFdPuKbPBR5l38vPBhWPuIWhBrAPvPbhbV7FsIvhBo5QbFvh8y7Q2D5PBrbQv8bhbX7FvPbQ3f7QBo5QVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
@@ -52,8 +59,11 @@ func main() {
 		var minPrice float64 = 999999999
 		var rate = ""
 
+		sneakerPriceContent := GetFileContent("sneaker-price.txt")
+		_ = json.Unmarshal([]byte(sneakerPriceContent), &sneakerPrice)
+
 		//msg += fmt.Sprintf(`%s\n`, curTime)
-		msg += fmt.Sprintf(`👟 鞋子数量\n`)
+		msg += fmt.Sprintf(`👟 鞋子数量（市场挂售）\n`)
 		msg += fmt.Sprintf(`————————————————\n`)
 		msg += fmt.Sprintf(`灰｜`)
 
@@ -147,11 +157,24 @@ func main() {
 		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d \n`, newNum, oldNum)
 		msg += fmt.Sprintf(`新增均价 %s｜新增中位价 %s \n`, avgPrice, middlePrice)
 
-		p, num := NumBelowTo(newSneakerPrice)
-		msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
+		if chain == "104" {
+			p, num := NumBelowTo(newSneakerPrice)
+			msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
+			p, num = NumBelowToNext(newSneakerPrice)
+			msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
+		} else {
+			p, num := NumBelowTo(newSneakerPrice)
+			msg += fmt.Sprintf(`%ssol以下数量 %d \n`, p, num)
+			p, num = NumBelowToNext(newSneakerPrice)
+			msg += fmt.Sprintf(`%ssol以下数量 %d \n`, p, num)
+		}
 
 		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
+		if chain == "104" {
+			msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
+		} else {
+			msg += fmt.Sprintf(`💰 鞋子地板价（sol）\n`)
+		}
 		msg += fmt.Sprintf(`————————————————\n`)
 		msg += fmt.Sprintf(`灰｜`)
 
@@ -211,7 +234,7 @@ func main() {
 		var scrollTotal = 0
 
 		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`📜 卷轴数量\n`)
+		msg += fmt.Sprintf(`📜 卷轴数量（市场挂售）\n`)
 		msg += fmt.Sprintf(`————————————————\n`)
 		total = sneakerTotal(701, 1)
 		msg += fmt.Sprintf(`灰 %d｜`, total)
@@ -273,24 +296,44 @@ func main() {
 		Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 
 		msg += fmt.Sprintf(`全网地板 %.2f｜增幅 %s\n`, minPrice, rate)
-
 		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
-		msg += fmt.Sprintf(`————————————————\n`)
-		gstPrice, gstBnb := GSTPriceForBSC()
-		gmtPrice, gmtBnb := GMTPriceForBSC()
-		profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
-		msg += fmt.Sprintf(`1BGST = %.4fU = %.4fBNB \n`, gstPrice, gstBnb)
-		msg += fmt.Sprintf(`1GMT = %.4fU = %.4fBNB \n`, gmtPrice, gmtBnb)
-		msg += fmt.Sprintf(`%s\n`, profit)
 
+		if chain == "104" {
+			msg += fmt.Sprintf(`💰 Mint利润（bnb）\n`)
+			msg += fmt.Sprintf(`————————————————\n`)
+			gstPrice, gstBnb := GSTPriceForBSC()
+			gmtPrice, gmtBnb := GMTPriceForBSC()
+			profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
+			msg += fmt.Sprintf(`1BGST = %.4fU = %.4fBNB \n`, gstPrice, gstBnb)
+			msg += fmt.Sprintf(`1GMT = %.4fU = %.4fBNB \n`, gmtPrice, gmtBnb)
+			msg += fmt.Sprintf(`%s\n`, profit)
+		} else {
+			msg += fmt.Sprintf(`💰 Mint利润（usd）\n`)
+			msg += fmt.Sprintf(`————————————————\n`)
+			gstPrice, gmtPrice, profit := CalcMintProfitForSol(sneakerMinPrice, scrollMinPrice)
+			msg += fmt.Sprintf(`1BGST = %.4fU \n`, gstPrice)
+			msg += fmt.Sprintf(`1GMT = %.4fU \n`, gmtPrice)
+			msg += fmt.Sprintf(`mint费用 = %.4fU \n`, 360*gstPrice+40*gmtPrice)
+			msg += fmt.Sprintf(`卷轴费用 = %.4fU \n`, scrollMinPrice*gmtPrice*2)
+			msg += fmt.Sprintf(`升级费用 = %.4fU \n`, 20*gstPrice+10*gmtPrice)
+			msg += fmt.Sprintf(`%s\n`, profit)
+		}
+
+		fmt.Println(msg)
 		go push(msg)
 
 		// 给老的存起来，新的清空
-		sneakerPrice = newSneakerPrice
+		newSneakerPriceByte, _ := json.Marshal(newSneakerPrice)
+		Rewrite("sneaker-price.txt", string(newSneakerPriceByte))
 		newSneakerPrice = map[int]int{}
 
-		time.Sleep(time.Second * 300)
+		if chain == "104" {
+			chain = "103"
+		} else {
+			chain = "104"
+		}
+
+		time.Sleep(time.Second * 5)
 	}
 }
 
@@ -299,7 +342,8 @@ func sneakerTotal(types int, quantity int) int {
 	var page, total = 0, 0
 
 	for {
-		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=104&page=%d&refresh=false", types, quantity, page)
+		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=1002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+		//var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -353,7 +397,7 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 
 	time.Sleep(time.Second * 1)
 
-	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=104&page=%d&refresh=true", types, quantity, 0)
+	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatalln(err.Error())
@@ -419,9 +463,17 @@ func writeLog(content string) string {
 
 func push(msg string) {
 
-	webhook, err := cfg.Section("discord").GetKey("webhook")
-	if err != nil {
-		log.Fatalln(err.Error())
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 	}
 
 	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))

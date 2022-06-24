@@ -15,7 +15,7 @@ import (
 )
 
 func Insert(filePath string, value string) {
-	file, err := os.OpenFile(fmt.Sprintf("./db/%s", filePath), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile(fmt.Sprintf("./db/%s-%s", chain, filePath), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		fmt.Println("文件打开失败", err)
 	}
@@ -26,7 +26,7 @@ func Insert(filePath string, value string) {
 }
 
 func FindLatest(filePath string) string {
-	file, err := os.OpenFile(fmt.Sprintf("./db/%s", filePath), os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile(fmt.Sprintf("./db/%s-%s", chain, filePath), os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,6 +37,29 @@ func FindLatest(filePath string) string {
 		lineText = scanner.Text()
 	}
 	return lineText
+}
+
+func Rewrite(filePath string, value string) {
+	file, err := os.OpenFile(fmt.Sprintf("./db/%s-%s", chain, filePath), os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Println("文件打开失败", err)
+	}
+	defer file.Close()
+	write := bufio.NewWriter(file)
+	write.WriteString(value + "\n")
+	write.Flush()
+}
+
+func GetFileContent(filePath string) string {
+	content, err := os.ReadFile(fmt.Sprintf("./db/%s-%s", chain, filePath))
+	//file, err := os.OpenFile(fmt.Sprintf("./db/%s-%s", chain, filePath), os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return ""
+	}
+	//defer file.Close()
+	//r := bufio.NewReader(file)
+	//content, err := r.ReadByte()
+	return string(content)
 }
 
 func CalcRate(filePath string, currentValue string) string {
@@ -109,9 +132,28 @@ func NumBelowTo(sneakers map[int]int) (string, int) {
 	return fmt.Sprintf("%.2f", float64(nextPrice)/1000000), count
 }
 
-func GetTokenPrice(address string) (float64, float64) {
+func NumBelowToNext(sneakers map[int]int) (string, int) {
+	var prices []int
+	for _, price := range sneakers {
+		prices = append(prices, price)
+	}
+	sort.Ints(prices)
+	if len(prices) == 0 {
+		return "", 0
+	}
+	minPrice := prices[0]
+	nextPrice := (minPrice + 0.2*1000000) / 100000 * 100000
+	var count = 0
+	for _, price := range prices {
+		if price < nextPrice {
+			count++
+		}
+	}
+	return fmt.Sprintf("%.2f", float64(nextPrice)/1000000), count
+}
+
+func GetTokenPriceForBSC(address string) (float64, float64) {
 	url := fmt.Sprintf("https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?contract_addresses=%s&vs_currencies=bnb%%2Cusd", address)
-	//url := fmt.Sprintf("https://api.pancakeswap.info/api/v2/tokens/%s", address)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println(err.Error())
@@ -134,19 +176,57 @@ func GetTokenPrice(address string) (float64, float64) {
 	return price, priceBnb
 }
 
+func GetTokenPriceForSol(address string) float64 {
+	url := fmt.Sprintf("https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=%s&vs_currencies=usd", address)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	log.Println(string(body))
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	var data = map[string]map[string]float64{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		log.Println(err.Error())
+		return 0
+	}
+	price := data[address]["usd"]
+	return price
+}
+
 func GSTPriceForBSC() (float64, float64) {
-	return GetTokenPrice("0x4a2c860cec6471b9f5f5a336eb4f38bb21683c98")
+	return GetTokenPriceForBSC("0x4a2c860cec6471b9f5f5a336eb4f38bb21683c98")
 }
 
 func GMTPriceForBSC() (float64, float64) {
-	return GetTokenPrice("0x3019bf2a2ef8040c242c9a4c5c4bd4c81678b2a1")
+	return GetTokenPriceForBSC("0x3019bf2a2ef8040c242c9a4c5c4bd4c81678b2a1")
+}
+
+func GSTPriceForSol() float64 {
+	return GetTokenPriceForSol("AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB")
+}
+
+func GMTPriceForSol() float64 {
+	return GetTokenPriceForSol("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx")
 }
 
 func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) string {
 	_, gstPrice := GSTPriceForBSC()
 	_, gmtPrice := GMTPriceForBSC()
-	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice
-	log.Println(gstPrice)
+	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
 	profit := sneakerFloor*0.94 - total
-	return fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, profit)
+	return fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
+}
+
+func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
+	gstPrice := GSTPriceForSol()
+	gmtPrice := GMTPriceForSol()
+	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice - 20*gstPrice - 10*gmtPrice
+	profit := sneakerFloor*0.94 - total
+	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2f", sneakerFloor, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
