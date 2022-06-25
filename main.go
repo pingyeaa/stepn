@@ -339,7 +339,7 @@ func main() {
 		// 推创世
 		GenesShoes()
 
-		time.Sleep(time.Second * 600)
+		time.Sleep(time.Second * 300)
 	}
 }
 
@@ -404,7 +404,7 @@ func sneakerTotal(types int, quantity int) int {
 		fmt.Print(".")
 
 		page++
-		time.Sleep(time.Second)
+		time.Sleep(time.Second * 2)
 	}
 
 	sneakerTotalDesc(types, quantity)

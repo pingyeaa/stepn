@@ -286,6 +286,7 @@ func GenesShoes() {
 	for _, shoe := range genesShoes {
 		genesOtd = append(genesOtd, shoe.Otd)
 	}
+	genesOtd = removeDuplicateElement(genesOtd)
 	sort.Ints(genesOtd)
 
 	var minPrice = 999999999999
@@ -413,4 +414,16 @@ func IsAwesomeNum(num int) bool {
 		}
 	}
 	return false
+}
+
+func removeDuplicateElement(languages []int) []int {
+	result := make([]int, 0, len(languages))
+	temp := map[int]struct{}{}
+	for _, item := range languages {
+		if _, ok := temp[item]; !ok {
+			temp[item] = struct{}{}
+			result = append(result, item)
+		}
+	}
+	return result
 }
