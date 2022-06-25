@@ -73,5 +73,6 @@ func TestGetFileContent(t *testing.T) {
 	//fmt.Println(BnbPrice(), SolPrice())
 	//fmt.Println(IsAwesomeNum(998))
 
-	TestSneakerTotal()
+	resp := RemoveDuplicateElement([]int{1, 3, 4, 5, 3, 4, 1})
+	fmt.Println(resp)
 }

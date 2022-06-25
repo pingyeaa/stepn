@@ -286,7 +286,7 @@ func GenesShoes() {
 	for _, shoe := range genesShoes {
 		genesOtd = append(genesOtd, shoe.Otd)
 	}
-	genesOtd = removeDuplicateElement(genesOtd)
+	genesOtd = RemoveDuplicateElement(genesOtd)
 	sort.Ints(genesOtd)
 
 	var minPrice = 999999999999
@@ -299,9 +299,17 @@ func GenesShoes() {
 		unitName = "Sol"
 	}
 
+	var handled map[int]int
 	for _, otd := range genesOtd {
 		for _, shoe := range genesShoes {
 			if otd == shoe.Otd {
+
+				// 重复鞋子出现5次就退出
+				_, ok := handled[shoe.Otd]
+				if ok {
+					continue
+				}
+
 				color := ""
 				if shoe.Quantity == 1 {
 					color = "灰"
@@ -338,6 +346,7 @@ func GenesShoes() {
 				}
 
 				msg = append(msg, fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName))
+				handled[shoe.Otd] = 1
 			}
 		}
 	}
@@ -416,7 +425,7 @@ func IsAwesomeNum(num int) bool {
 	return false
 }
 
-func removeDuplicateElement(languages []int) []int {
+func RemoveDuplicateElement(languages []int) []int {
 	result := make([]int, 0, len(languages))
 	temp := map[int]struct{}{}
 	for _, item := range languages {
