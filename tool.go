@@ -10,6 +10,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 
 	"gopkg.in/fatih/set.v0"
 )
@@ -267,15 +268,18 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, solPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
 
-func GenesShoes() string {
-	msg := `\n`
+func GenesShoes() {
+
+	var msg []string
+
+	msg = append(msg, `\n`)
 	if chain == "104" {
-		msg += `👑 创世数据（BSC）\n`
-		msg += `————————————————\n`
+		msg = append(msg, `👑 创世数据（BSC）\n`)
+		msg = append(msg, `————————————————\n`)
 	}
 	if chain == "103" {
-		msg += `️👑 创世数据（Sol）\n`
-		msg += `————————————————\n`
+		msg = append(msg, `👑 创世数据（Sol）\n`)
+		msg = append(msg, `————————————————\n`)
 	}
 
 	var genesOtd []int
@@ -332,29 +336,41 @@ func GenesShoes() string {
 					minPrice = shoe.SellPrice
 				}
 
-				msg += fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
+				msg = append(msg, fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName))
 			}
 		}
 	}
 
 	if len(genesShoes) == 0 {
-		msg += `暂无数据\n`
+		msg = append(msg, `暂无数据\n`)
 	}
-	msg += `————————————————\n`
-	msg += fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd))
+	msg = append(msg, `————————————————\n`)
+	msg = append(msg, fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd)))
 
 	prevTotalValue := FindLatest("genes-total.txt")
 	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
 		rate := CalcRate("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
 		Insert("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
-		msg += fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate)
+		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate))
 	}
 
 	if len(genesShoes) == 0 {
-		msg += fmt.Sprintf(`地板价：0%s`, unitName)
+		msg = append(msg, fmt.Sprintf(`地板价：0%s`, unitName))
 	} else {
-		msg += fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName)
+		msg = append(msg, fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName))
 	}
 
-	return msg
+	var totalLength int
+	for _, s := range msg {
+		totalLength += len(s)
+	}
+	if totalLength > 1900 {
+		msgCount := len(msg)
+		pushToGenes(strings.Join(msg[:msgCount], ""))
+		pushToGenes(strings.Join(msg[msgCount:], ""))
+	} else {
+		pushToGenes(strings.Join(msg, ""))
+	}
+
+	return
 }

@@ -336,13 +336,7 @@ func main() {
 		sneakerPrice = map[int]int{}
 
 		// 推创世
-		genesMsg := GenesShoes()
-		if len(genesMsg) > 2000 {
-			pushToGenes(genesMsg[:2000])
-			pushToGenes(genesMsg[2000:])
-		} else {
-			pushToGenes(genesMsg)
-		}
+		GenesShoes()
 
 		time.Sleep(time.Second * 600)
 	}
@@ -354,7 +348,6 @@ func sneakerTotal(types int, quantity int) int {
 
 	for {
 		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=1002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
-		//var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			fmt.Println(err.Error())
