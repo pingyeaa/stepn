@@ -39,11 +39,11 @@ func main() {
 	}
 	cookie = key.String()
 
-	//key, err = cfg.Section("stepn").GetKey("chain")
-	//if err != nil {
-	//	log.Fatalln(err.Error())
-	//}
-	//chain = key.String()
+	key, err = cfg.Section("stepn").GetKey("chain")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	chain = key.String()
 
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=NH5PB87Pgm5PbFxPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbX7FsIvhBo5Qbmvh8y7Q2D5PBrbQ68bhbX7FkPbQ387QBo5lVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
 	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=sH5PB87Pgm5PbFdPuKbPBR5l38vPBhWPuIWhBrAPvPbhbV7FsIvhBo5QbFvh8y7Q2D5PBrbQv8bhbX7FvPbQ3f7QBo5QVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
@@ -327,7 +327,6 @@ func main() {
 		msg += fmt.Sprintf(`\n`)
 		msg += fmt.Sprintf(`PS：数据存在误差，仅供参考，非投资建议 \n`)
 
-		fmt.Println(msg)
 		push(msg)
 
 		// 给老的存起来，新的清空
@@ -345,13 +344,7 @@ func main() {
 			pushToGenes(genesMsg)
 		}
 
-		time.Sleep(time.Second * 5)
-
-		if chain == "104" {
-			chain = "103"
-		} else {
-			chain = "104"
-		}
+		time.Sleep(time.Second * 600)
 	}
 }
 
