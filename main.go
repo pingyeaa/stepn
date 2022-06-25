@@ -472,6 +472,8 @@ func sneakerTotalDesc(types int, quantity int) {
 			_, ok := itemStatic[data.Otd]
 			if ok {
 				repeatCount++
+			} else {
+				itemStatic[data.Otd] = 1
 			}
 			if repeatCount >= 5 {
 				break
