@@ -366,8 +366,8 @@ func GenesShoes() {
 	}
 	if totalLength > 1900 {
 		msgCount := len(msg)
-		pushToGenes(strings.Join(msg[:msgCount], ""))
-		pushToGenes(strings.Join(msg[msgCount:], ""))
+		pushToGenes(strings.Join(msg[:msgCount/2], ""))
+		pushToGenes(strings.Join(msg[msgCount/2:], ""))
 	} else {
 		pushToGenes(strings.Join(msg, ""))
 	}
