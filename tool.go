@@ -299,7 +299,7 @@ func GenesShoes() {
 		unitName = "Sol"
 	}
 
-	var handled map[int]int
+	var handled = map[int]int{}
 	for _, otd := range genesOtd {
 		for _, shoe := range genesShoes {
 			if otd == shoe.Otd {
