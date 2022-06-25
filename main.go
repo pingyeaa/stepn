@@ -23,6 +23,7 @@ var cookie = ""
 var cfg *ini.File
 var sneakerPrice = map[int]int{}
 var newSneakerPrice = map[int]int{}
+var itemStatic = map[int]int{}
 var chain = "104"
 var genesShoes []*Shoe
 
@@ -344,10 +345,10 @@ func main() {
 
 func sneakerTotal(types int, quantity int) int {
 
-	var page, total = 0, 0
+	var page = 0
 
 	for {
-		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=1002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -380,10 +381,11 @@ func sneakerTotal(types int, quantity int) int {
 			break
 		}
 
-		total += len(orderList.Data)
+		for _, data := range orderList.Data {
 
-		if types != 701 {
-			for _, data := range orderList.Data {
+			itemStatic[data.Otd] = 1
+
+			if types != 701 {
 				newSneakerPrice[data.Otd] = data.SellPrice
 				if data.Otd == 9999 {
 					fmt.Println("find you", data.Otd, data.SellPrice)
@@ -405,14 +407,95 @@ func sneakerTotal(types int, quantity int) int {
 		time.Sleep(time.Second)
 	}
 
+	sneakerTotalDesc(types, quantity)
+
+	var total = len(itemStatic)
+	itemStatic = map[int]int{}
+
 	return total
+}
+
+func sneakerTotalDesc(types int, quantity int) {
+
+	var page = 0
+
+	for {
+		var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		req.Header.Set("cookie", cookie)
+		req.Header.Set("accept", "application/json")
+		req.Header.Set("accept-language", "zh-CN")
+		req.Header.Set("host", "apilb.stepn.com")
+		req.Header.Set("group", "173224989")
+		resp, err := (&http.Client{}).Do(req)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+		defer resp.Body.Close()
+		respByte, _ := ioutil.ReadAll(resp.Body)
+		if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
+			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+		}
+
+		var orderList OrderList
+		err = json.Unmarshal(respByte, &orderList)
+		if err != nil {
+			fmt.Println(string(respByte))
+			fmt.Println(err.Error())
+			return
+		}
+
+		if orderList.Data == nil || len(orderList.Data) == 0 {
+			break
+		}
+
+		var repeatCount = 0
+
+		for _, data := range orderList.Data {
+
+			// 重复鞋子出现5次就退出
+			_, ok := itemStatic[data.Otd]
+			if ok {
+				repeatCount++
+			}
+			if repeatCount >= 5 {
+				break
+			}
+
+			if types != 701 {
+				newSneakerPrice[data.Otd] = data.SellPrice
+				if data.Otd == 9999 {
+					fmt.Println("find you", data.Otd, data.SellPrice)
+				}
+				if chain == "103" && data.Otd < 10000 {
+					data.TypeID = types
+					genesShoes = append(genesShoes, data)
+				}
+				if chain == "104" && data.Otd < 20000 {
+					data.TypeID = types
+					genesShoes = append(genesShoes, data)
+				}
+			}
+		}
+
+		fmt.Print(".")
+
+		page++
+		time.Sleep(time.Second)
+	}
+
+	return
 }
 
 func floorPrice(types int, quantity int, zeroNum int) float64 {
 
 	time.Sleep(time.Second * 1)
 
-	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
+	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatalln(err.Error())

@@ -374,3 +374,38 @@ func GenesShoes() {
 
 	return
 }
+
+func IsAwesomeNum(num int) bool {
+	var awesomePool []string
+	for i := 1; i < 10; i++ {
+		for j := 1; j < 5; j++ {
+			oNum := strings.Repeat(fmt.Sprintf("%d", i), j)
+			awesomePool = append(awesomePool, oNum)
+		}
+	}
+	for i := 1; i < 10; i++ {
+		awesomePool = append(awesomePool, fmt.Sprintf("%d", i))
+	}
+	for i := 10; i < 100; i += 10 {
+		awesomePool = append(awesomePool, fmt.Sprintf("%d", i))
+	}
+	for i := 100; i < 1000; i += 100 {
+		awesomePool = append(awesomePool, fmt.Sprintf("%d", i))
+	}
+	for i := 1000; i < 10000; i += 1000 {
+		awesomePool = append(awesomePool, fmt.Sprintf("%d", i))
+	}
+	awesomePool = append(awesomePool, "6688")
+	awesomePool = append(awesomePool, "8866")
+	awesomePool = append(awesomePool, "168")
+	awesomePool = append(awesomePool, "668")
+	awesomePool = append(awesomePool, "886")
+	awesomePool = append(awesomePool, "618")
+
+	for _, s := range awesomePool {
+		if s == fmt.Sprintf("%d", num) {
+			return true
+		}
+	}
+	return false
+}
