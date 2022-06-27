@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"gopkg.in/fatih/set.v0"
 )
@@ -385,6 +386,115 @@ func GenesShoes() {
 		pushToGenes(strings.Join(msg[msgCount/2:], ""))
 	} else {
 		pushToGenes(strings.Join(msg, ""))
+	}
+
+	return
+}
+
+func Genesis23wShoes() {
+
+	var msg []string
+
+	msg = append(msg, `\n`)
+	msg = append(msg, fmt.Sprintf(`👑 BSC_OG_%s\n`, time.Now().Format("20060102")))
+	msg = append(msg, `————————————————\n`)
+
+	var genesOtd []int
+	for _, shoe := range genesShoes {
+		genesOtd = append(genesOtd, shoe.Otd)
+	}
+	genesOtd = RemoveDuplicateElement(genesOtd)
+	sort.Ints(genesOtd)
+
+	var minPrice = 999999999999
+
+	unitName := "BNB"
+
+	var handled = map[int]int{}
+	for _, otd := range genesOtd {
+		for _, shoe := range genesShoes {
+			if otd == shoe.Otd {
+
+				_, ok := handled[shoe.Otd]
+				if ok {
+					continue
+				}
+
+				color := ""
+				if shoe.Quantity == 1 {
+					color = "灰"
+				}
+				if shoe.Quantity == 2 {
+					color = "绿"
+				}
+				if shoe.Quantity == 3 {
+					color = "蓝"
+				}
+				if shoe.Quantity == 4 {
+					color = "紫"
+				}
+				if shoe.Quantity == 5 {
+					color = "橙"
+				}
+
+				typeName := ""
+				if shoe.TypeID == 601 {
+					typeName = "W"
+				}
+				if shoe.TypeID == 602 {
+					typeName = "J"
+				}
+				if shoe.TypeID == 603 {
+					typeName = "R"
+				}
+				if shoe.TypeID == 604 {
+					typeName = "T"
+				}
+
+				if minPrice > shoe.SellPrice {
+					minPrice = shoe.SellPrice
+				}
+
+				msg = append(msg, fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName))
+				handled[shoe.Otd] = 1
+			}
+		}
+	}
+
+	if len(genesShoes) == 0 {
+		msg = append(msg, `暂无数据\n`)
+	}
+	msg = append(msg, `————————————————\n`)
+	msg = append(msg, fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd)))
+
+	prevTotalValue := FindLatest("genesis23w-total.txt")
+	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
+		rate := CalcRate("genesis23w-total.txt", fmt.Sprintf("%d", len(genesShoes)))
+		Insert("genesis23w-total.txt", fmt.Sprintf("%d", len(genesShoes)))
+		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate))
+	}
+
+	if len(genesShoes) == 0 {
+		msg = append(msg, fmt.Sprintf(`地板价：0%s`, unitName))
+	} else {
+		msg = append(msg, fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName))
+	}
+
+	var totalLength int
+	for _, s := range msg {
+		totalLength += len(s)
+	}
+	if totalLength > 5800 {
+		msgCount := len(msg)
+		pushToGenesis23w(strings.Join(msg[:msgCount/3], ""))
+		pushToGenesis23w(strings.Join(msg[msgCount/3:msgCount/2], ""))
+		pushToGenesis23w(strings.Join(msg[msgCount/2:], ""))
+	} else if totalLength > 1900 {
+		msgCount := len(msg)
+		pushToGenesis23w(strings.Join(msg[:msgCount/2], ""))
+		pushToGenesis23w(strings.Join(msg[msgCount/2:], ""))
+	} else {
+		pushToGenesis23w(strings.Join(msg, ""))
 	}
 
 	return

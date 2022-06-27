@@ -26,6 +26,7 @@ var newSneakerPrice = map[int]int{}
 var itemStatic = map[int]int{}
 var chain = "104"
 var genesShoes []*Shoe
+var genesis23w []*Shoe
 
 func main() {
 
@@ -55,6 +56,7 @@ func main() {
 
 		newSneakerPrice = map[int]int{}
 		genesShoes = []*Shoe{}
+		genesis23w = []*Shoe{}
 
 		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 		fmt.Println(curTime)
@@ -340,6 +342,11 @@ func main() {
 		// 推创世
 		GenesShoes()
 
+		// 推OG
+		if chain == "104" {
+			Genesis23wShoes()
+		}
+
 		time.Sleep(time.Second * 300)
 	}
 }
@@ -403,6 +410,10 @@ func sneakerTotal(types int, quantity int) int {
 				if chain == "104" && data.Otd < 20000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
+				}
+				if chain == "104" && data.Otd < 30000 && data.Otd > 20000 {
+					data.TypeID = types
+					genesis23w = append(genesis23w, data)
 				}
 			}
 		}
@@ -491,6 +502,10 @@ func sneakerTotalDesc(types int, quantity int) {
 				if chain == "104" && data.Otd < 20000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
+				}
+				if chain == "104" && data.Otd < 30000 && data.Otd > 20000 {
+					data.TypeID = types
+					genesis23w = append(genesis23w, data)
 				}
 			}
 		}
@@ -603,8 +618,8 @@ func push(msg string) {
 	fmt.Println(string(respByte))
 }
 
-func pushToGenes(msg string) {
-	webhook, err := cfg.Section("discord").GetKey("genes_webhook")
+func pushDcFromConfigKey(configKey string, msg string) {
+	webhook, err := cfg.Section("discord").GetKey(configKey)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -622,4 +637,12 @@ func pushToGenes(msg string) {
 	defer resp.Body.Close()
 	respByte, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(respByte))
+}
+
+func pushToGenes(msg string) {
+	pushDcFromConfigKey("genes_webhook", msg)
+}
+
+func pushToGenesis23w(msg string) {
+	pushDcFromConfigKey("genesis23w_webhook", msg)
 }
