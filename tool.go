@@ -396,7 +396,7 @@ func Genesis23wShoes() {
 	var msg []string
 
 	msg = append(msg, `\n`)
-	msg = append(msg, fmt.Sprintf(`👑 BSC_OG_%s\n`, time.Now().Format("20060102")))
+	msg = append(msg, fmt.Sprintf(`👑 BSC_OG_%s\n`, time.Now().Format("20060102150405")))
 	msg = append(msg, `————————————————\n`)
 
 	var genesOtd []int
