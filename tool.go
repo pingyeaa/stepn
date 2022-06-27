@@ -400,7 +400,7 @@ func Genesis23wShoes() {
 	msg = append(msg, `————————————————\n`)
 
 	var genesOtd []int
-	for _, shoe := range genesShoes {
+	for _, shoe := range genesis23w {
 		genesOtd = append(genesOtd, shoe.Otd)
 	}
 	genesOtd = RemoveDuplicateElement(genesOtd)
@@ -412,7 +412,7 @@ func Genesis23wShoes() {
 
 	var handled = map[int]int{}
 	for _, otd := range genesOtd {
-		for _, shoe := range genesShoes {
+		for _, shoe := range genesis23w {
 			if otd == shoe.Otd {
 
 				_, ok := handled[shoe.Otd]
@@ -461,7 +461,7 @@ func Genesis23wShoes() {
 		}
 	}
 
-	if len(genesShoes) == 0 {
+	if len(genesis23w) == 0 {
 		msg = append(msg, `暂无数据\n`)
 	}
 	msg = append(msg, `————————————————\n`)
@@ -469,12 +469,12 @@ func Genesis23wShoes() {
 
 	prevTotalValue := FindLatest("genesis23w-total.txt")
 	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
-		rate := CalcRate("genesis23w-total.txt", fmt.Sprintf("%d", len(genesShoes)))
-		Insert("genesis23w-total.txt", fmt.Sprintf("%d", len(genesShoes)))
-		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate))
+		rate := CalcRate("genesis23w-total.txt", fmt.Sprintf("%d", len(genesis23w)))
+		Insert("genesis23w-total.txt", fmt.Sprintf("%d", len(genesis23w)))
+		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesis23w))-prevTotal, rate))
 	}
 
-	if len(genesShoes) == 0 {
+	if len(genesis23w) == 0 {
 		msg = append(msg, fmt.Sprintf(`地板价：0%s`, unitName))
 	} else {
 		msg = append(msg, fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName))
