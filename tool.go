@@ -562,11 +562,9 @@ func ReplaceVar(template string, vars map[string]string, newFile string) {
 	content := string(contentByte)
 	for key, value := range vars {
 		key = fmt.Sprintf("{%s}", key)
-		fmt.Println(key, value)
-		content = strings.Replace(content, key, value, 1)
+		content = strings.Replace(content, key, value, -1)
 	}
-	fmt.Println(content)
-	//os.Remove(newFile)
+	os.Remove(newFile)
 	file, err := os.OpenFile(newFile, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Println("文件打开失败", err)

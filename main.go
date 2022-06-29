@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"gopkg.in/ini.v1"
@@ -30,6 +31,12 @@ var itemStatic = map[int]int{}
 var chain = "104"
 var genesShoes []*Shoe
 var genesis23w []*Shoe
+
+var sneakerNumVars = map[string]string{}
+var sneakerMintVars = map[string]string{}
+var sneakerFloorVars = map[string]string{}
+var scrollVars = map[string]string{}
+var sneakerTypeMintNum = map[int]map[int]map[int][]int{}
 
 func main() {
 
@@ -50,21 +57,24 @@ func main() {
 	}
 	chain = key.String()
 
-	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=NH5PB87Pgm5PbFxPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbX7FsIvhBo5Qbmvh8y7Q2D5PBrbQ68bhbX7FkPbQ387QBo5lVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
-	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=sH5PB87Pgm5PbFdPuKbPBR5l38vPBhWPuIWhBrAPvPbhbV7FsIvhBo5QbFvh8y7Q2D5PBrbQv8bhbX7FvPbQ3f7QBo5QVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
-	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=vH5PB87Pgm5PbFdPuKbPBR5l3rvPBhWPuIWhBrAPvPbhbD7FsIvhBo5QbFvh8y7Q2D5PBrbQu8bhbX7FxPbQ3P7QBoxQVF7FXDWQsfAP&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A702%23os%3AIOS
-	// https://apilb.stepn.com/run/login?type=2&account=173224989&password=kHAP2FvQgDbhBHAQ8VbFBKAFshAPxPdPkIxhTKvQN87Q687PkfvQbqvQko7QbDdQTRAP3K7FTHdFsPxQTRxhTIAlWm5Q3hAP68bQXDWh&deviceInfo=model%3AiPhone%23systemVersion%3A15.5%23systemName%3AiOS%23physical%3Atrue%23buildNumber%3A703%23os%3AIOS
-
 	for {
+		HandleSneakerNum()
+		log.Fatalln(1)
 
 		newSneakerPrice = map[int]int{}
 		genesShoes = []*Shoe{}
 		genesis23w = []*Shoe{}
 
+		sneakerNumVars = map[string]string{}
+		sneakerMintVars = map[string]string{}
+		sneakerFloorVars = map[string]string{}
+		scrollVars = map[string]string{}
+		sneakerTypeMintNum = map[int]map[int]map[int][]int{}
+
 		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 		fmt.Println(curTime)
-		writeLog(curTime)
-		var allTotal, total = 0, 0
+
+		var _, total = 0, 0
 		var msg = ""
 		var price float64 = 0
 		var minPrice float64 = 999999999
@@ -74,111 +84,6 @@ func main() {
 		_ = json.Unmarshal([]byte(sneakerPriceContent), &sneakerPrice)
 
 		//msg += fmt.Sprintf(`%s\n`, curTime)
-		msg += fmt.Sprintf(`👟 鞋子数量（市场挂售）\n`)
-		msg += fmt.Sprintf(`————————————————\n`)
-		msg += fmt.Sprintf(`灰｜`)
-
-		total = sneakerTotal(601, 1)
-		msg += fmt.Sprintf(`W %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(602, 1)
-		msg += fmt.Sprintf(`J %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(603, 1)
-		msg += fmt.Sprintf(`R %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(604, 1)
-		msg += fmt.Sprintf(`T %d｜ \n`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		msg += fmt.Sprintf(`绿｜`)
-		total = sneakerTotal(601, 2)
-		msg += fmt.Sprintf(`W %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(602, 2)
-		msg += fmt.Sprintf(`J %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(603, 2)
-		msg += fmt.Sprintf(`R %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(604, 2)
-		msg += fmt.Sprintf(`T %d｜ \n`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		msg += fmt.Sprintf(`蓝｜`)
-		total = sneakerTotal(601, 3)
-		msg += fmt.Sprintf(`W %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(602, 3)
-		msg += fmt.Sprintf(`J %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(603, 3)
-		msg += fmt.Sprintf(`R %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(604, 3)
-		msg += fmt.Sprintf(`T %d｜ \n`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		msg += fmt.Sprintf(`紫｜`)
-		total = sneakerTotal(601, 4)
-		msg += fmt.Sprintf(`W %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(602, 4)
-		msg += fmt.Sprintf(`J %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(603, 4)
-		msg += fmt.Sprintf(`R %d｜`, total)
-		allTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(604, 4)
-		msg += fmt.Sprintf(`T %d｜ \n`, total)
-		allTotal += total
-		rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
-		Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
-
-		newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
-
-		msg += fmt.Sprintf(`总鞋数 %d｜增幅 %s \n`, allTotal, rate)
-		msg += fmt.Sprintf(`市场新增 %d｜消耗 %d \n`, newNum, oldNum)
-		msg += fmt.Sprintf(`新增均价 %s｜新增中位价 %s \n`, avgPrice, middlePrice)
-
-		if chain == "104" {
-			p, num := NumBelowTo(newSneakerPrice)
-			msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
-			p, num = NumBelowToNext(newSneakerPrice)
-			msg += fmt.Sprintf(`%sbnb以下数量 %d \n`, p, num)
-		} else {
-			p, num := NumBelowTo(newSneakerPrice)
-			msg += fmt.Sprintf(`%ssol以下数量 %d \n`, p, num)
-			p, num = NumBelowToNext(newSneakerPrice)
-			msg += fmt.Sprintf(`%ssol以下数量 %d \n`, p, num)
-		}
 
 		msg += fmt.Sprintf(`\n`)
 		if chain == "104" {
@@ -354,6 +259,137 @@ func main() {
 	}
 }
 
+func HandleSneakerNum() {
+
+	var allTotal = 0
+	var rate = ""
+
+	if chain == "103" {
+		sneakerNumVars["chain_name"] = "SOL"
+	} else if chain == "104" {
+		sneakerNumVars["chain_name"] = "BSC"
+	} else {
+		sneakerNumVars["chain_name"] = "ETH"
+	}
+	sneakerNumVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	allTotal += AutoSetSneakerVar(601, 1, "common_w")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(602, 1, "common_j")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(603, 1, "common_r")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(604, 1, "common_t")
+	time.Sleep(time.Second * 5)
+
+	allTotal += AutoSetSneakerVar(601, 2, "uncommon_w")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(602, 2, "uncommon_j")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(603, 2, "uncommon_r")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(604, 2, "uncommon_t")
+	time.Sleep(time.Second * 5)
+
+	allTotal += AutoSetSneakerVar(601, 3, "rare_w")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(602, 3, "rare_j")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(603, 3, "rare_r")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(604, 3, "rare_t")
+	time.Sleep(time.Second * 5)
+
+	allTotal += AutoSetSneakerVar(601, 4, "epic_w")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(602, 4, "epic_j")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(603, 4, "epic_r")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(604, 4, "epic_t")
+	time.Sleep(time.Second * 5)
+
+	allTotal += AutoSetSneakerVar(601, 5, "legendary_w")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(602, 5, "legendary_j")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(603, 5, "legendary_r")
+	time.Sleep(time.Second * 5)
+	allTotal += AutoSetSneakerVar(604, 5, "legendary_t")
+	time.Sleep(time.Second * 5)
+
+	rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
+	Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
+	sneakerNumVars["rate"] = fmt.Sprintf("%s", rate)
+
+	newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
+
+	if newNum > oldNum {
+		sneakerNumVars["notice"] = "市场通胀中……"
+	} else {
+		sneakerNumVars["notice"] = "市场通缩中……"
+	}
+	sneakerNumVars["total"] = fmt.Sprintf("%d", allTotal)
+	sneakerNumVars["new_total"] = fmt.Sprintf("%d", newNum)
+	sneakerNumVars["consume_total"] = fmt.Sprintf("%d", oldNum)
+	sneakerNumVars["new_avg_price"] = fmt.Sprintf("%s", avgPrice)
+	sneakerNumVars["new_middle_price"] = fmt.Sprintf("%s", middlePrice)
+
+	if chain == "104" {
+		p, num := NumBelowTo(newSneakerPrice)
+		sneakerNumVars["below_price_1"] = fmt.Sprintf("%sBNB", p)
+		sneakerNumVars["below_price_total_1"] = fmt.Sprintf("%d", num)
+		p, num = NumBelowToNext(newSneakerPrice)
+		sneakerNumVars["below_price_2"] = fmt.Sprintf("%sBNB", p)
+		sneakerNumVars["below_price_total_2"] = fmt.Sprintf("%d", num)
+	} else if chain == "103" {
+		p, num := NumBelowTo(newSneakerPrice)
+		sneakerNumVars["below_price_1"] = fmt.Sprintf("%sSOL", p)
+		sneakerNumVars["below_price_total_1"] = fmt.Sprintf("%d", num)
+		p, num = NumBelowToNext(newSneakerPrice)
+		sneakerNumVars["below_price_2"] = fmt.Sprintf("%sSOL", p)
+		sneakerNumVars["below_price_total_2"] = fmt.Sprintf("%d", num)
+	} else {
+
+	}
+
+	template := "templates/sneaker-num.html"
+	newFile := fmt.Sprintf("o-%s-sneaker-num.html", chain)
+	newImage := fmt.Sprintf("%s-sneaker-num.jpg", chain)
+	ReplaceVar(template, sneakerNumVars, newFile)
+	Html2Image(newFile, newImage)
+	PushFile(newImage)
+}
+
+func AutoSetSneakerVar(types int, quality int, varName string) int {
+	total := sneakerTotal(types, quality)
+	rate := CalcRate(fmt.Sprintf("sneaker-%d-%d.txt", types, quality), fmt.Sprintf("%d", total))
+	Insert(fmt.Sprintf("sneaker-%d-%d.txt", types, quality), fmt.Sprintf("%d", total))
+	if strings.Contains(rate, "-") {
+		sneakerNumVars[varName] = fmt.Sprintf(`%s<li style="border-right: none; width: auto;">&nbsp;&nbsp;<label style="font-weight: bold;">总数：%d</label> &nbsp;&nbsp;<label style="color: red;">增幅%s</label></li>`, CalcMintNum(types, quality), total, rate)
+	} else {
+		sneakerNumVars[varName] = fmt.Sprintf(`%s<li style="border-right: none; width: auto;">&nbsp;&nbsp;<label style="font-weight: bold;">总数：%d</label> &nbsp;&nbsp;<label style="color: green;">增幅%s</label></li>`, CalcMintNum(types, quality), total, rate)
+	}
+
+	return total
+}
+
+func CalcMintNum(types int, quality int) string {
+	output := ""
+	for i := 0; i < 4; i++ {
+		otds := RemoveDuplicateElement(sneakerTypeMintNum[types][quality][i])
+		output += fmt.Sprintf(`<li>M%d:%d</li>`, i, len(otds))
+	}
+	total4to8 := 0
+	for i := 4; i < 8; i++ {
+		otds := RemoveDuplicateElement(sneakerTypeMintNum[types][quality][i])
+		total4to8 += len(otds)
+	}
+	output += fmt.Sprintf(`<li style="width: 100px;">M4～7:%d</li>`, total4to8)
+	fmt.Println(sneakerTypeMintNum)
+	return output
+}
+
 func sneakerTotal(types int, quantity int) int {
 
 	var page = 0
@@ -400,6 +436,29 @@ func sneakerTotal(types int, quantity int) int {
 		for _, data := range orderList.Data {
 
 			itemStatic[data.Otd] = 1
+
+			_, ok := sneakerTypeMintNum[types]
+			if ok {
+				_, ok := sneakerTypeMintNum[types][data.Quantity]
+				if ok {
+					_, ok := sneakerTypeMintNum[types][data.Quantity][data.Mint]
+					if ok {
+						sneakerTypeMintNum[types][data.Quantity][data.Mint] = append(sneakerTypeMintNum[types][data.Quantity][data.Mint], data.Otd)
+					} else {
+						sneakerTypeMintNum[types][data.Quantity][data.Mint] = []int{data.Otd}
+					}
+				} else {
+					sneakerTypeMintNum[types][data.Quantity] = map[int][]int{
+						data.Mint: {data.Otd},
+					}
+				}
+			} else {
+				sneakerTypeMintNum[types] = map[int]map[int][]int{
+					data.Quantity: {
+						data.Mint: {data.Otd},
+					},
+				}
+			}
 
 			if types != 701 {
 				newSneakerPrice[data.Otd] = data.SellPrice
@@ -491,6 +550,29 @@ func sneakerTotalDesc(types int, quantity int) {
 			}
 			if repeatCount >= 5 {
 				break
+			}
+
+			_, ok = sneakerTypeMintNum[types]
+			if ok {
+				_, ok := sneakerTypeMintNum[types][data.Quantity]
+				if ok {
+					_, ok := sneakerTypeMintNum[types][data.Quantity][data.Mint]
+					if ok {
+						sneakerTypeMintNum[types][data.Quantity][data.Mint] = append(sneakerTypeMintNum[types][data.Quantity][data.Mint], data.Otd)
+					} else {
+						sneakerTypeMintNum[types][data.Quantity][data.Mint] = []int{data.Otd}
+					}
+				} else {
+					sneakerTypeMintNum[types][data.Quantity] = map[int][]int{
+						data.Mint: {data.Otd},
+					}
+				}
+			} else {
+				sneakerTypeMintNum[types] = map[int]map[int][]int{
+					data.Quantity: {
+						data.Mint: {data.Otd},
+					},
+				}
 			}
 
 			if types != 701 {

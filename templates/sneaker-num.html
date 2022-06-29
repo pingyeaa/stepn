@@ -35,24 +35,25 @@
 
         li {
             float: left;
-            width: 80px;
             height: 40px;
-            /*border-top: 1px solid gray;*/
             list-style: none;
             line-height: 40px;
-            text-align: left;
-            padding-left: 20px;
+            text-align: center;
+            width: 80px;
+            border-right: solid 1px #cbcbcb;
         }
 
         .table {
             font-size: 14px;
-            width: 760px;
+            width: 740px;
+            margin-bottom: 10px;
+            padding: 10px;
         }
 
         .fangkuai {
             width: 100%;
             height: 40px;
-            border-top: solid 1px gray;
+            border-top: solid 1px #cbcbcb;
         }
 
         .clear {
@@ -73,13 +74,14 @@
         }
 
         .notice {
-            background-color: #ffe8de;
+            background-color: rgb(250,224,225);
             height: 50px;
             line-height: 50px;
             font-size: 16px;
             padding-left: 20px;
             margin-top: 20px;
             margin-bottom: 20px;
+            width: 740px;
         }
 
         .statistic {
@@ -105,157 +107,171 @@
     <label style="font-weight: bold; color: red; font-size: 16px;">&nbsp;增幅 {rate}</label>
 </div>
 <div class="statistic" style="width: 440px; float: left; margin-right: 20px;">
-    <label style="font-size: 16px;">{below_price_1}以下数量 {below_price_total_1}｜{below_price_2}以下数量 {below_price_total_2}</label>
+    <label style="font-size: 16px; font-weight: bold;">{below_price_1}以内 {below_price_total_1}个｜{below_price_2}以内
+        {below_price_total_2}个</label>
 </div>
 <div class="clear"></div>
 <div class="statistic" style="width: 760px;">
-    <label style="font-size: 16px;">市场新增 {new_total}｜市场消耗 {consume_total}｜新增均价 {new_avg_price}｜新增中位价 {new_middle_price}</label>
+    <label style="font-size: 16px;">
+        <label style="font-weight: bold">市场新增 {new_total}</label>｜
+        <label style="font-weight: bold">市场消耗 {consume_total}</label>｜
+        <label style="font-weight: bold">新增均价 {new_avg_price}</label>｜
+        <label style="font-weight: bold">新增中位价 {new_middle_price}</label>
+    </label>
 </div>
 <div class="clear"></div>
-<div class="table">
+<div class="table" style="background-color: rgb(232,232,232);">
     <div class="clear"></div>
-    <div class="fangkuai" style="border-top: solid 2px gray;">
+    <div class="fangkuai" style="border-top: none;">
         <ul>
-            <li style="border-right: solid 1px gray;">灰-W</li>
-            <li style="width: 500px;">{common_w}</li>
+            <li style="border-right: solid 1px #cbcbcb;">灰-W</li>
+            {common_w}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">灰-J</li>
-            <li style="width: 500px;">{common_j}</li>
+            <li style="border-right: solid 1px #cbcbcb;">灰-J</li>
+            {common_j}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">灰-R</li>
-            <li style="width: 500px;">{common_r}</li>
+            <li style="border-right: solid 1px #cbcbcb;">灰-R</li>
+            {common_r}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">灰-T</li>
-            <li style="width: 500px;">{common_t}</li>
+            <li style="border-right: solid 1px #cbcbcb;">灰-T</li>
+            {common_t}
         </ul>
     </div>
     <div class="clear"></div>
-    <div class="fangkuai" style="border-top: solid 2px gray;">
+</div>
+<div class="table" style="background-color: rgb(222,250,238);">
+    <div class="fangkuai" style="border-top: none;">
         <ul>
-            <li style="border-right: solid 1px gray;">绿-W</li>
-            <li style="width: 500px;">{uncommon_w}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai">
-        <ul>
-            <li style="border-right: solid 1px gray;">绿-J</li>
-            <li style="width: 500px;">{uncommon_j}</li>
+            <li style="border-right: solid 1px #cbcbcb;">绿-W</li>
+            {uncommon_w}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">绿-R</li>
-            <li style="width: 500px;">{uncommon_r}</li>
+            <li style="border-right: solid 1px #cbcbcb;">绿-J</li>
+            {uncommon_j}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">绿-T</li>
-            <li style="width: 500px;">{uncommon_t}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai" style="border-top: solid 2px gray;">
-        <ul>
-            <li style="border-right: solid 1px gray;">蓝-W</li>
-            <li style="width: 500px;">{rare_w}</li>
+            <li style="border-right: solid 1px #cbcbcb;">绿-R</li>
+            {uncommon_r}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">蓝-J</li>
-            <li style="width: 500px;">{rare_j}</li>
+            <li style="border-right: solid 1px #cbcbcb;">绿-T</li>
+            {uncommon_t}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(228,235,253);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb;">蓝-W</li>
+            {rare_w}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">蓝-R</li>
-            <li style="width: 500px;">{rare_r}</li>
+            <li style="border-right: solid 1px #cbcbcb;">蓝-J</li>
+            {rare_j}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">蓝-T</li>
-            <li style="width: 500px;">{rare_t}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai" style="border-top: solid 2px gray;">
-        <ul>
-            <li style="border-right: solid 1px gray;">紫-W</li>
-            <li style="width: 500px;">{epic_w}</li>
+            <li style="border-right: solid 1px #cbcbcb;">蓝-R</li>
+            {rare_r}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">紫-J</li>
-            <li style="width: 500px;">{epic_j}</li>
+            <li style="border-right: solid 1px #cbcbcb;">蓝-T</li>
+            {rare_t}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(245,238,253);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb;">紫-W</li>
+            {epic_w}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">紫-R</li>
-            <li style="width: 500px;">{epic_r}</li>
+            <li style="border-right: solid 1px #cbcbcb;">紫-J</li>
+            {epic_j}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">紫-T</li>
-            <li style="width: 500px;">{epic_t}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai" style="border-top: solid 2px gray;">
-        <ul>
-            <li style="border-right: solid 1px gray;">橙-W</li>
-            <li style="width: 500px;">{legendary_w}</li>
+            <li style="border-right: solid 1px #cbcbcb;">紫-R</li>
+            {epic_r}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">橙-J</li>
-            <li style="width: 500px;">{legendary_j}</li>
+            <li style="border-right: solid 1px #cbcbcb;">紫-T</li>
+            {epic_t}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(253,241,234);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb;">橙-W</li>
+            {legendary_w}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai">
         <ul>
-            <li style="border-right: solid 1px gray;">橙-R</li>
-            <li style="width: 500px;">{legendary_r}</li>
+            <li style="border-right: solid 1px #cbcbcb;">橙-J</li>
+            {legendary_j}
+        </ul>
+    </div>
+    <div class="clear"></div>
+    <div class="fangkuai">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb;">橙-R</li>
+            {legendary_r}
         </ul>
     </div>
     <div class="clear"></div>
     <div class="fangkuai" style="border-bottom: solid 2px gray;">
         <ul>
-            <li style="border-right: solid 1px gray;">橙-T</li>
-            <li style="width: 500px;">{legendary_t}</li>
+            <li style="border-right: solid 1px #cbcbcb;">橙-T</li>
+            {legendary_t}
         </ul>
     </div>
     <div class="clear"></div>
-    <div class="notice">{notice}</div>
 </div>
+<div class="notice">{notice}</div><br>
 
 </body>
 </html>
