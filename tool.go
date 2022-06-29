@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"sort"
 	"strconv"
 	"strings"
@@ -545,4 +546,33 @@ func RemoveDuplicateElement(languages []int) []int {
 		}
 	}
 	return result
+}
+
+func Html2Image(input string, output string) {
+	cmd := exec.Command("wkhtmltoimage", "--quality", "100", "--disable-smart-width", "--width", "1600", "--zoom", "2", "--enable-local-file-access", input, output)
+	//cmd := exec.Command("wkhtmltoimage", "--quality", "100", "--disable-smart-width", "--width", "2400", "--zoom", "3", "--enable-local-file-access", input, output)
+	err := cmd.Run()
+	if err != nil {
+		log.Fatalf("failed to call cmd.Run(): %v", err)
+	}
+}
+
+func ReplaceVar(template string, vars map[string]string, newFile string) {
+	contentByte, _ := os.ReadFile(template)
+	content := string(contentByte)
+	for key, value := range vars {
+		key = fmt.Sprintf("{%s}", key)
+		fmt.Println(key, value)
+		content = strings.Replace(content, key, value, 1)
+	}
+	fmt.Println(content)
+	//os.Remove(newFile)
+	file, err := os.OpenFile(newFile, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Println("文件打开失败", err)
+	}
+	defer file.Close()
+	write := bufio.NewWriter(file)
+	write.WriteString(content)
+	write.Flush()
 }

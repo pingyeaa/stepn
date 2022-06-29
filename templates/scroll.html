@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!--        <link href='http://fonts.googleapis.com/css?family=ZCOOL+XiaoWei' rel='stylesheet' type='text/css'>-->
+    <style>
+        @font-face {
+            font-family: '华文隶体';
+            /*src: url("./华文隶体.eot");*/
+            src: url("./fonts/华文隶体.woff") format("woff");
+            /*url("./华文隶体.ttf") format("truetype"),*/
+            /*url("./华文隶体.eot#iefix") format("embedded-opentype"),*/
+            /*url("./华文隶体.svg#STLiti") format("svg");*/
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            width: 800px;
+            margin: 20px;
+            margin-top: 30px;
+            /*height: 350px;*/
+            color: black;
+            font-family: "华文隶体";
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            float: left;
+            width: 80px;
+            height: 40px;
+            /*border-top: 1px solid gray;*/
+            list-style: none;
+            line-height: 40px;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .clear {
+            clear: left;
+        }
+
+        .watermark {
+            color: black;
+            pointer-events: none;
+            display: inline-block;
+            font-size: 30px;
+            position: absolute;
+            font-weight: bold;
+            opacity: 0.3;
+            left: 500px;
+            top: 30px;
+        }
+
+        .statistic {
+            height: 50px;
+            width: 145px;
+            line-height: 50px;
+            background-color: #e0e0e0;
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<span class="watermark">Twitter: @Buffybub</span>
+<div style="margin-bottom: 15px;">
+    <label style="font-size: 24px; font-weight: bold; color: darkorange;">卷轴数据（{chain_name}）</label>
+    <label style="font-size: 16px; color: gray;">&nbsp;&nbsp;{time}</label>
+</div>
+<div style="margin-bottom: 20px;">
+    <label style="font-size: 16px; font-weight: bold;">卷轴总挂售：{total}个</label>
+    <label style="color: red;"> 增幅{rate}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">灰 {common_total}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">绿 {uncommon_total}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">蓝 {rare_total}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">紫 {epic_total}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">橙 {legendary_total}</label>
+</div>
+<div class="clear"></div>
+<div style="margin-bottom: 20px; margin-top: 10px;">
+    <label style="font-size: 16px; font-weight: bold;">卷轴全网地板价：{floor_price}GMT</label>
+    <label style="color: red;"> 增幅{rate}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">灰 {common_price}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">绿 {uncommon_price}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">蓝 {rare_price}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">紫 {epic_price}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px;">橙 {legendary_price}</label>
+</div>
+<div class="clear"></div>
+
+</body>
+</html>

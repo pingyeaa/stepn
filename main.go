@@ -5,10 +5,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 
 	"gopkg.in/ini.v1"
@@ -637,6 +640,53 @@ func pushDcFromConfigKey(configKey string, msg string) {
 	defer resp.Body.Close()
 	respByte, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(respByte))
+}
+
+func PushFile(filePath string) {
+
+	url := "https://discord.com/api/webhooks/990263471415386175/R7AWHDh_N-fOKdL0Tt9CuhDDLNA1uu_Mr2CKLwtEQiQ7QqLJcXg_fF5CTqdLIRI1Brhg"
+	method := "POST"
+
+	payload := &bytes.Buffer{}
+	writer := multipart.NewWriter(payload)
+	file, errFile1 := os.Open(filePath)
+	defer file.Close()
+	part1,
+		errFile1 := writer.CreateFormFile("file1", filepath.Base(filePath))
+	_, errFile1 = io.Copy(part1, file)
+	if errFile1 != nil {
+		fmt.Println(errFile1)
+		return
+	}
+	err := writer.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payload)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	req.Header.Add("User-Agent", "apifox/1.0.0 (https://www.apifox.cn)")
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(body))
 }
 
 func pushToGenes(msg string) {
