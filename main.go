@@ -31,6 +31,8 @@ var itemStatic = map[int]int{}
 var chain = "104"
 var genesShoes []*Shoe
 var genesis23w []*Shoe
+var sneakerMinPrice float64 = 0
+var scrollMinPrice float64 = 0
 
 var sneakerNumVars = map[string]string{}
 var sneakerMintVars = map[string]string{}
@@ -58,8 +60,6 @@ func main() {
 	chain = key.String()
 
 	for {
-		HandleSneakerNum()
-		log.Fatalln(1)
 
 		newSneakerPrice = map[int]int{}
 		genesShoes = []*Shoe{}
@@ -71,175 +71,13 @@ func main() {
 		scrollVars = map[string]string{}
 		sneakerTypeMintNum = map[int]map[int]map[int][]int{}
 
-		curTime := fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
-		fmt.Println(curTime)
-
-		var _, total = 0, 0
-		var msg = ""
-		var price float64 = 0
-		var minPrice float64 = 999999999
-		var rate = ""
-
 		sneakerPriceContent := GetFileContent("sneaker-price.txt")
 		_ = json.Unmarshal([]byte(sneakerPriceContent), &sneakerPrice)
 
-		//msg += fmt.Sprintf(`%s\n`, curTime)
-
-		msg += fmt.Sprintf(`\n`)
-		if chain == "104" {
-			msg += fmt.Sprintf(`💰 鞋子地板价（bnb）\n`)
-		} else {
-			msg += fmt.Sprintf(`💰 鞋子地板价（sol）\n`)
-		}
-		msg += fmt.Sprintf(`————————————————\n`)
-		msg += fmt.Sprintf(`灰｜`)
-
-		price = floorPrice(601, 1, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 1, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 1, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 1, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`T %.2f｜ \n`, price)
-
-		msg += fmt.Sprintf(`绿｜`)
-		price = floorPrice(601, 2, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 2, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 2, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 2, 1000000)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`T %.2f｜\n`, price)
-
-		msg += fmt.Sprintf(`蓝｜`)
-		price = floorPrice(601, 3, 1000000)
-		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 3, 1000000)
-		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 3, 1000000)
-		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 3, 1000000)
-		msg += fmt.Sprintf(`T %.2f｜\n`, price)
-
-		msg += fmt.Sprintf(`紫｜`)
-		price = floorPrice(601, 4, 1000000)
-		msg += fmt.Sprintf(`W %.2f｜`, price)
-		price = floorPrice(602, 4, 1000000)
-		msg += fmt.Sprintf(`J %.2f｜`, price)
-		price = floorPrice(603, 4, 1000000)
-		msg += fmt.Sprintf(`R %.2f｜`, price)
-		price = floorPrice(604, 4, 1000000)
-		msg += fmt.Sprintf(`T %.2f｜\n`, price)
-
-		rate = CalcRate("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
-		Insert("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
-		msg += fmt.Sprintf(`全网地板 %.2f ｜增幅 %s\n`, minPrice, rate)
-		sneakerMinPrice := minPrice
-
-		// 卷轴
-		var scrollTotal = 0
-
-		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`📜 卷轴数量（市场挂售）\n`)
-		msg += fmt.Sprintf(`————————————————\n`)
-		total = sneakerTotal(701, 1)
-		msg += fmt.Sprintf(`灰 %d｜`, total)
-		scrollTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(701, 2)
-		msg += fmt.Sprintf(`绿 %d｜`, total)
-		scrollTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(701, 3)
-		msg += fmt.Sprintf(`蓝 %d｜`, total)
-		scrollTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(701, 4)
-		msg += fmt.Sprintf(`紫 %d｜`, total)
-		scrollTotal += total
-		time.Sleep(time.Second * 5)
-
-		total = sneakerTotal(701, 5)
-		msg += fmt.Sprintf(`橙 %d｜\n`, total)
-		scrollTotal += total
-		time.Sleep(time.Second * 5)
-		rate = CalcRate("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
-		Insert("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
-		msg += fmt.Sprintf(`合计 %d｜增幅 %s｜\n`, scrollTotal, rate)
-
-		// 卷轴地板价
-
-		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`💰 卷轴地板价（gmt）\n`)
-		msg += fmt.Sprintf(`————————————————\n`)
-
-		minPrice = 999999999
-		price = floorPrice(701, 1, 100)
-		minPrice = comparePrice(minPrice, price)
-		scrollMinPrice := minPrice
-		msg += fmt.Sprintf(`灰 %.2f｜`, price)
-
-		price = floorPrice(701, 2, 100)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`绿 %.2f｜`, price)
-
-		price = floorPrice(701, 3, 100)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`蓝 %.2f｜`, price)
-
-		price = floorPrice(701, 4, 100)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`紫 %.2f｜`, price)
-
-		price = floorPrice(701, 5, 100)
-		minPrice = comparePrice(minPrice, price)
-		msg += fmt.Sprintf(`橙 %.2f｜\n`, price)
-
-		rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
-		Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
-
-		msg += fmt.Sprintf(`全网地板 %.2f｜增幅 %s\n`, minPrice, rate)
-		msg += fmt.Sprintf(`\n`)
-
-		if chain == "104" {
-			msg += fmt.Sprintf(`💰 Mint利润（usd）\n`)
-			msg += fmt.Sprintf(`————————————————\n`)
-			gstPrice, gmtPrice, profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
-			msg += fmt.Sprintf(`1GST = %.4fU \n`, gstPrice)
-			msg += fmt.Sprintf(`1GMT = %.4fU \n`, gmtPrice)
-			msg += fmt.Sprintf(`mint费用 = %.4fU \n`, 360*gstPrice+40*gmtPrice)
-			msg += fmt.Sprintf(`卷轴费用 = %.4fU \n`, scrollMinPrice*gmtPrice*2)
-			msg += fmt.Sprintf(`升级费用 = %.4fU \n`, 20*gstPrice+10*gmtPrice)
-			msg += fmt.Sprintf(`%s\n`, profit)
-		} else {
-			msg += fmt.Sprintf(`💰 Mint利润（usd）\n`)
-			msg += fmt.Sprintf(`————————————————\n`)
-			gstPrice, gmtPrice, profit := CalcMintProfitForSol(sneakerMinPrice, scrollMinPrice)
-			msg += fmt.Sprintf(`1GST = %.4fU \n`, gstPrice)
-			msg += fmt.Sprintf(`1GMT = %.4fU \n`, gmtPrice)
-			msg += fmt.Sprintf(`mint费用 = %.4fU \n`, 360*gstPrice+40*gmtPrice)
-			msg += fmt.Sprintf(`卷轴费用 = %.4fU \n`, scrollMinPrice*gmtPrice*2)
-			msg += fmt.Sprintf(`升级费用 = %.4fU \n`, 20*gstPrice+10*gmtPrice)
-			msg += fmt.Sprintf(`%s\n`, profit)
-		}
-
-		msg += fmt.Sprintf(`\n`)
-		msg += fmt.Sprintf(`PS：数据存在误差，仅供参考，非投资建议 \n`)
-
-		push(msg)
+		HandleSneakerNum()
+		HandleSneakerFloor()
+		HandleScroll()
+		HandleMint()
 
 		// 给老的存起来，新的清空
 		newSneakerPriceByte, _ := json.Marshal(newSneakerPrice)
@@ -257,6 +95,264 @@ func main() {
 
 		time.Sleep(time.Second * 300)
 	}
+}
+
+func HandleMint() {
+
+	if chain == "103" {
+		sneakerMintVars["chain_name"] = "SOL"
+	} else if chain == "104" {
+		sneakerMintVars["chain_name"] = "BSC"
+	} else {
+		sneakerMintVars["chain_name"] = "ETH"
+	}
+	sneakerMintVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	if chain == "104" {
+		gstPrice, gmtPrice, profit := CalcMintProfitForBSC(sneakerMinPrice, scrollMinPrice)
+		sneakerMintVars["gst_price_u"] = fmt.Sprintf("%.4fU", gstPrice)
+		sneakerMintVars["gmt_price_u"] = fmt.Sprintf("%.4fU", gmtPrice)
+		sneakerMintVars["scroll_price_u"] = fmt.Sprintf("%.4fU", scrollMinPrice*gmtPrice*2)
+		sneakerMintVars["mint_price_u"] = fmt.Sprintf("%.4fU", 360*gstPrice+40*gmtPrice)
+		sneakerMintVars["upgrade_price_u"] = fmt.Sprintf("%.4fU", 20*gstPrice+10*gmtPrice)
+		sneakerMintVars["sneaker_floor_price_u"] = fmt.Sprintf("%.4fBNB", sneakerMinPrice)
+		sneakerMintVars["formula"] = profit
+	} else {
+		gstPrice, gmtPrice, profit := CalcMintProfitForSol(sneakerMinPrice, scrollMinPrice)
+		sneakerMintVars["gst_price_u"] = fmt.Sprintf("%.4fU", gstPrice)
+		sneakerMintVars["gmt_price_u"] = fmt.Sprintf("%.4fU", gmtPrice)
+		sneakerMintVars["scroll_price_u"] = fmt.Sprintf("%.4fU", scrollMinPrice*gmtPrice*2)
+		sneakerMintVars["mint_price_u"] = fmt.Sprintf("%.4fU", 360*gstPrice+40*gmtPrice)
+		sneakerMintVars["upgrade_price_u"] = fmt.Sprintf("%.4fU", 20*gstPrice+10*gmtPrice)
+		sneakerMintVars["sneaker_floor_price_u"] = fmt.Sprintf("%.4fSol", sneakerMinPrice)
+		sneakerMintVars["formula"] = profit
+	}
+
+	template := "templates/sneaker-mint.html"
+	newFile := fmt.Sprintf("o-%s-sneaker-mint.html", chain)
+	newImage := chain + "-sneaker_mint.jpg"
+	ReplaceVar(template, sneakerMintVars, newFile)
+	Html2Image(newFile, newImage)
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+	PushFile(newImage, webhook.String())
+}
+
+func HandleScroll() {
+
+	var minPrice float64 = 999999999
+	var price float64 = 0
+	var scrollTotal = 0
+	var total = 0
+
+	if chain == "103" {
+		scrollVars["chain_name"] = "SOL"
+	} else if chain == "104" {
+		scrollVars["chain_name"] = "BSC"
+	} else {
+		scrollVars["chain_name"] = "ETH"
+	}
+	scrollVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	total = sneakerTotal(701, 1)
+	scrollVars["common_total"] = fmt.Sprintf("%d", total)
+	scrollTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = sneakerTotal(701, 2)
+	scrollVars["uncommon_total"] = fmt.Sprintf("%d", total)
+	scrollTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = sneakerTotal(701, 3)
+	scrollVars["rare_total"] = fmt.Sprintf("%d", total)
+	scrollTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = sneakerTotal(701, 4)
+	scrollVars["epic_total"] = fmt.Sprintf("%d", total)
+	scrollTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = sneakerTotal(701, 5)
+	scrollVars["legendary_total"] = fmt.Sprintf("%d", total)
+	scrollTotal += total
+	time.Sleep(time.Second * 5)
+
+	rate := CalcRate("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
+	Insert("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
+	scrollVars["total"] = fmt.Sprintf("%d", scrollTotal)
+	if strings.Contains(rate, "-") {
+		scrollVars["rate"] = fmt.Sprintf(`<label style="color:red;">增幅 %s</label>`, rate)
+	} else {
+		scrollVars["rate"] = fmt.Sprintf(`<label style="color:green;">增幅 %s</label>`, rate)
+	}
+
+	// 卷轴地板价
+	minPrice = 999999999
+	price = floorPrice(701, 1, 100)
+	scrollVars["common_price"] = fmt.Sprintf("%.2fGMT", price)
+	minPrice = comparePrice(minPrice, price)
+
+	price = floorPrice(701, 2, 100)
+	scrollVars["uncommon_price"] = fmt.Sprintf("%.2fGMT", price)
+	minPrice = comparePrice(minPrice, price)
+
+	price = floorPrice(701, 3, 100)
+	scrollVars["rare_price"] = fmt.Sprintf("%.2fGMT", price)
+	minPrice = comparePrice(minPrice, price)
+
+	price = floorPrice(701, 4, 100)
+	scrollVars["epic_price"] = fmt.Sprintf("%.2fGMT", price)
+	minPrice = comparePrice(minPrice, price)
+
+	price = floorPrice(701, 5, 100)
+	scrollVars["legendary_price"] = fmt.Sprintf("%.2fGMT", price)
+	minPrice = comparePrice(minPrice, price)
+
+	scrollMinPrice = minPrice
+
+	rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
+	Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
+	scrollVars["floor_price"] = fmt.Sprintf("%.2f", minPrice)
+	if strings.Contains(rate, "-") {
+		scrollVars["floor_rate"] = fmt.Sprintf(`<label style="color:red;">增幅 %s</label>`, rate)
+	} else {
+		scrollVars["floor_rate"] = fmt.Sprintf(`<label style="color:green;">增幅 %s</label>`, rate)
+	}
+
+	template := "templates/scroll.html"
+	newFile := fmt.Sprintf("o-%s-scroll.html", chain)
+	newImage := chain + "-scroll.jpg"
+	ReplaceVar(template, scrollVars, newFile)
+	Html2Image(newFile, newImage)
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+	PushFile(newImage, webhook.String())
+}
+
+func HandleSneakerFloor() {
+
+	var minPrice float64 = 999999999
+	var price float64 = 0
+	var unitName = "BNB"
+
+	if chain == "103" {
+		unitName = "SOL"
+		sneakerFloorVars["chain_name"] = "SOL"
+	} else if chain == "104" {
+		unitName = "BNB"
+		sneakerFloorVars["chain_name"] = "BSC"
+	} else {
+		unitName = "ETH"
+		sneakerFloorVars["chain_name"] = "ETH"
+	}
+	sneakerFloorVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	price = floorPrice(601, 1, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["common_w_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(602, 1, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["common_j_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(603, 1, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["common_r_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(604, 1, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["common_t_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+
+	price = floorPrice(601, 2, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["uncommon_w_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(602, 2, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["uncommon_j_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(603, 2, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["uncommon_r_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(604, 2, 1000000)
+	minPrice = comparePrice(minPrice, price)
+	sneakerFloorVars["uncommon_t_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+
+	sneakerMinPrice = minPrice
+
+	price = floorPrice(601, 3, 1000000)
+	sneakerFloorVars["rare_w_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(602, 3, 1000000)
+	sneakerFloorVars["rare_j_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(603, 3, 1000000)
+	sneakerFloorVars["rare_r_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(604, 3, 1000000)
+	sneakerFloorVars["rare_t_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+
+	price = floorPrice(601, 4, 1000000)
+	sneakerFloorVars["epic_w_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(602, 4, 1000000)
+	sneakerFloorVars["epic_j_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(603, 4, 1000000)
+	sneakerFloorVars["epic_r_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(604, 4, 1000000)
+	sneakerFloorVars["epic_t_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+
+	price = floorPrice(601, 5, 1000000)
+	sneakerFloorVars["legendary_w_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(602, 5, 1000000)
+	sneakerFloorVars["legendary_j_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(603, 5, 1000000)
+	sneakerFloorVars["legendary_r_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+	price = floorPrice(604, 5, 1000000)
+	sneakerFloorVars["legendary_t_floor"] = fmt.Sprintf("%.2f %s", price, unitName)
+
+	rate := CalcRate("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
+	Insert("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
+
+	sneakerFloorVars["floor"] = fmt.Sprintf("%.2f%s", minPrice, unitName)
+	if strings.Contains(rate, "-") {
+		sneakerFloorVars["rate"] = `<label style="color:red;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	} else {
+		sneakerFloorVars["rate"] = `<label style="color:green;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	}
+
+	template := "templates/sneaker-floor.html"
+	newFile := fmt.Sprintf("o-%s-sneaker-floor.html", chain)
+	newImage := chain + "-sneaker-floor.jpg"
+	ReplaceVar(template, sneakerFloorVars, newFile)
+	Html2Image(newFile, newImage)
+
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+	PushFile(newImage, webhook.String())
 }
 
 func HandleSneakerNum() {
@@ -358,7 +454,19 @@ func HandleSneakerNum() {
 	newImage := fmt.Sprintf("%s-sneaker-num.jpg", chain)
 	ReplaceVar(template, sneakerNumVars, newFile)
 	Html2Image(newFile, newImage)
-	PushFile(newImage)
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+	PushFile(newImage, webhook.String())
 }
 
 func AutoSetSneakerVar(types int, quality int, varName string) int {
@@ -724,9 +832,9 @@ func pushDcFromConfigKey(configKey string, msg string) {
 	fmt.Println(string(respByte))
 }
 
-func PushFile(filePath string) {
+func PushFile(filePath string, webhook string) {
 
-	url := "https://discord.com/api/webhooks/990263471415386175/R7AWHDh_N-fOKdL0Tt9CuhDDLNA1uu_Mr2CKLwtEQiQ7QqLJcXg_fF5CTqdLIRI1Brhg"
+	url := webhook
 	method := "POST"
 
 	payload := &bytes.Buffer{}

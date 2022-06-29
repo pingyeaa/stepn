@@ -70,6 +70,26 @@
             margin-bottom: 15px;
             text-align: center;
         }
+
+        .common {
+            background-color: rgb(232,232,232);
+        }
+
+        .uncommon {
+            background-color: rgb(222,250,238);
+        }
+
+        .rare {
+            background-color: rgb(228,235,253);
+        }
+
+        .epic {
+            background-color: rgb(245,238,253);
+        }
+
+        .legendary {
+            background-color: rgb(253,241,234);
+        }
     </style>
 </head>
 <body>
@@ -80,41 +100,41 @@
 </div>
 <div style="margin-bottom: 20px;">
     <label style="font-size: 16px; font-weight: bold;">卷轴总挂售：{total}个</label>
-    <label style="color: red;"> 增幅{rate}</label>
+    <label> {rate}</label>
 </div>
-<div class="statistic">
+<div class="statistic common">
     <label style="font-size: 16px;">灰 {common_total}</label>
 </div>
-<div class="statistic">
+<div class="statistic uncommon">
     <label style="font-size: 16px;">绿 {uncommon_total}</label>
 </div>
-<div class="statistic">
+<div class="statistic rare">
     <label style="font-size: 16px;">蓝 {rare_total}</label>
 </div>
-<div class="statistic">
+<div class="statistic epic">
     <label style="font-size: 16px;">紫 {epic_total}</label>
 </div>
-<div class="statistic">
+<div class="statistic legendary">
     <label style="font-size: 16px;">橙 {legendary_total}</label>
 </div>
 <div class="clear"></div>
 <div style="margin-bottom: 20px; margin-top: 10px;">
     <label style="font-size: 16px; font-weight: bold;">卷轴全网地板价：{floor_price}GMT</label>
-    <label style="color: red;"> 增幅{rate}</label>
+    <label style="color: red;"> {floor_rate}</label>
 </div>
-<div class="statistic">
+<div class="statistic common">
     <label style="font-size: 16px;">灰 {common_price}</label>
 </div>
-<div class="statistic">
+<div class="statistic uncommon">
     <label style="font-size: 16px;">绿 {uncommon_price}</label>
 </div>
-<div class="statistic">
+<div class="statistic rare">
     <label style="font-size: 16px;">蓝 {rare_price}</label>
 </div>
-<div class="statistic">
+<div class="statistic epic">
     <label style="font-size: 16px;">紫 {epic_price}</label>
 </div>
-<div class="statistic">
+<div class="statistic legendary">
     <label style="font-size: 16px;">橙 {legendary_price}</label>
 </div>
 <div class="clear"></div>

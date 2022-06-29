@@ -173,27 +173,27 @@ func TestGetFileContent(t *testing.T) {
 	//ReplaceVar(template, vars, newFile)
 	//Html2Image(newFile, newImage)
 	//PushFile(newImage)
-
-	vars := map[string]string{
-		"chain_name":      "BSC",
-		"time":            "2022-06-28 12:11",
-		"total":           "200",
-		"rate":            "2%",
-		"common_total":    "20",
-		"uncommon_total":  "20",
-		"rare_total":      "20",
-		"epic_total":      "20",
-		"legendary_total": "20",
-		"common_price":    "20",
-		"uncommon_price":  "20",
-		"rare_price":      "20",
-		"epic_price":      "20",
-		"legendary_price": "20",
-	}
-	template := "templates/scroll.html"
-	newFile := fmt.Sprintf("o-%s-scroll.html", chain)
-	newImage := "scroll.jpg"
-	ReplaceVar(template, vars, newFile)
-	Html2Image(newFile, newImage)
-	PushFile(newImage)
+	//
+	//vars := map[string]string{
+	//	"chain_name":      "BSC",
+	//	"time":            "2022-06-28 12:11",
+	//	"total":           "200",
+	//	"rate":            "2%",
+	//	"common_total":    "20",
+	//	"uncommon_total":  "20",
+	//	"rare_total":      "20",
+	//	"epic_total":      "20",
+	//	"legendary_total": "20",
+	//	"common_price":    "20",
+	//	"uncommon_price":  "20",
+	//	"rare_price":      "20",
+	//	"epic_price":      "20",
+	//	"legendary_price": "20",
+	//}
+	//template := "templates/scroll.html"
+	//newFile := fmt.Sprintf("o-%s-scroll.html", chain)
+	//newImage := "scroll.jpg"
+	//ReplaceVar(template, vars, newFile)
+	//Html2Image(newFile, newImage)
+	//PushFile(newImage)
 }

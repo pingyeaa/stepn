@@ -20,7 +20,7 @@
         }
 
         body {
-            width: 800px;
+            width: 780px;
             margin: 20px;
             margin-top: 30px;
             height: 350px;
@@ -35,16 +35,19 @@
 
         li {
             float: left;
-            width: 150px;
+            width: 180px;
             height: 50px;
-            border: 1px solid gray;
+            /*border: 1px solid gray;*/
             list-style: none;
             line-height: 50px;
             text-align: center;
+            font-weight: bold;
         }
 
         .table {
-            margin-top: 20px;
+            width: 740px;
+            margin-top: 10px;
+            padding: 0 10px;
         }
 
         .fangkuai {
@@ -76,62 +79,66 @@
     <label style="font-size: 24px; font-weight: bold; color: darkorange;">鞋子地板价（{chain_name}）</label>
     <label style="font-size: 16px; color: gray;">&nbsp;&nbsp;{time}</label>
 </div>
-<div>
+<div style="margin-bottom: 20px;">
     <label style="font-size: 16px; font-weight: bold;">全网地板：{floor}</label>
-    <label style="font-weight: bold; color: red; font-size: 16px;">&nbsp;增幅 {rate}</label>
+    <label style="font-weight: bold; color: red; font-size: 16px;">&nbsp;{rate}</label>
 </div>
-<div class="table">
+<div class="table" style="background-color: rgb(232,232,232);">
     <div class="fangkuai">
         <ul>
-            <li>灰-W {common_w_floor}</li>
-            <li>灰-J {common_j_floor}</li>
-            <li>灰-R {common_r_floor}</li>
-            <li>灰-T {common_t_floor}</li>
-            <li>均价 {common_avg_floor}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai">
-        <ul>
-            <li>绿-W {uncommon_w_floor}</li>
-            <li>绿-J {uncommon_j_floor}</li>
-            <li>绿-R {uncommon_r_floor}</li>
-            <li>绿-T {uncommon_t_floor}</li>
-            <li>均价 {uncommon_avg_floor}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai">
-        <ul>
-            <li>蓝-W {rare_w_floor}</li>
-            <li>蓝-J {rare_j_floor}</li>
-            <li>蓝-R {rare_r_floor}</li>
-            <li>蓝-T {rare_t_floor}</li>
-            <li>均价 {rare_avg_floor}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai">
-        <ul>
-            <li>紫-W {epic_w_floor}</li>
-            <li>紫-J {epic_j_floor}</li>
-            <li>紫-R {epic_r_floor}</li>
-            <li>紫-T {epic_t_floor}</li>
-            <li>均价 {epic_avg_floor}</li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="fangkuai">
-        <ul>
-            <li>橙-W {legendary_w_floor}</li>
-            <li>橙-J {legendary_j_floor}</li>
-            <li>橙-R {legendary_r_floor}</li>
-            <li>橙-T {legendary_t_floor}</li>
-            <li>均价 {legendary_avg_floor}</li>
+            <li>灰-W <label style="font-weight: normal;">{common_w_floor}</label></li>
+            <li>灰-J <label style="font-weight: normal;">{common_j_floor}</label></li>
+            <li>灰-R <label style="font-weight: normal;">{common_r_floor}</label></li>
+            <li>灰-T <label style="font-weight: normal;">{common_t_floor}</label></li>
         </ul>
     </div>
     <div class="clear"></div>
 </div>
+<div class="table" style="background-color: rgb(222,250,238);">
+    <div class="fangkuai">
+        <ul>
+            <li>绿-W <label style="font-weight: normal;">{uncommon_w_floor}</label></li>
+            <li>绿-J <label style="font-weight: normal;">{uncommon_j_floor}</label></li>
+            <li>绿-R <label style="font-weight: normal;">{uncommon_r_floor}</label></li>
+            <li>绿-T <label style="font-weight: normal;">{uncommon_t_floor}</label></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(228,235,253);">
+    <div class="fangkuai">
+        <ul>
+            <li>蓝-W <label style="font-weight: normal;">{rare_w_floor}</label></li>
+            <li>蓝-J <label style="font-weight: normal;">{rare_j_floor}</label></li>
+            <li>蓝-R <label style="font-weight: normal;">{rare_r_floor}</label></li>
+            <li>蓝-T <label style="font-weight: normal;">{rare_t_floor}</label></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(245,238,253);">
+    <div class="fangkuai">
+        <ul>
+            <li>紫-W <label style="font-weight: normal;">{epic_w_floor}</label></li>
+            <li>紫-J <label style="font-weight: normal;">{epic_j_floor}</label></li>
+            <li>紫-R <label style="font-weight: normal;">{epic_r_floor}</label></li>
+            <li>紫-T <label style="font-weight: normal;">{epic_t_floor}</label></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(253,241,234); margin-bottom: 20px;">
+    <div class="fangkuai">
+        <ul>
+            <li>橙-W <label style="font-weight: normal;">{legendary_w_floor}</label></li>
+            <li>橙-J <label style="font-weight: normal;">{legendary_j_floor}</label></li>
+            <li>橙-R <label style="font-weight: normal;">{legendary_r_floor}</label></li>
+            <li>橙-T <label style="font-weight: normal;">{legendary_t_floor}</label></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<br>
 
 </body>
 </html>
