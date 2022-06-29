@@ -194,6 +194,6 @@ func TestGetFileContent(t *testing.T) {
 	//newFile := fmt.Sprintf("o-%s-scroll.html", chain)
 	//newImage := "scroll.jpg"
 	//ReplaceVar(template, vars, newFile)
-	Html2Image(newFile, newImage)
+	//Html2Image(newFile, newImage)
 	//PushFile(newImage)
 }
