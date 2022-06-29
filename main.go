@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -494,7 +493,6 @@ func CalcMintNum(types int, quality int) string {
 		total4to8 += len(otds)
 	}
 	output += fmt.Sprintf(`<li style="width: 100px;">M4～7:%d</li>`, total4to8)
-	fmt.Println(sneakerTypeMintNum)
 	return output
 }
 
@@ -570,9 +568,6 @@ func sneakerTotal(types int, quantity int) int {
 
 			if types != 701 {
 				newSneakerPrice[data.Otd] = data.SellPrice
-				if data.Otd == 9999 {
-					fmt.Println("find you", data.Otd, data.SellPrice)
-				}
 				if chain == "103" && data.Otd < 10000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
@@ -685,9 +680,6 @@ func sneakerTotalDesc(types int, quantity int) {
 
 			if types != 701 {
 				newSneakerPrice[data.Otd] = data.SellPrice
-				if data.Otd == 9999 {
-					fmt.Println("find you", data.Otd, data.SellPrice)
-				}
 				if chain == "103" && data.Otd < 10000 {
 					data.TypeID = types
 					genesShoes = append(genesShoes, data)
@@ -765,50 +757,6 @@ func comparePrice(price1 float64, price2 float64) float64 {
 		return price2
 	}
 	return price1
-}
-
-func writeLog(content string) string {
-	filePath := "./logs/" + time.Now().Format("2006-01-02") + ".txt"
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		fmt.Println("文件打开失败", err)
-	}
-	defer file.Close()
-	write := bufio.NewWriter(file)
-	write.WriteString(content + "\n")
-	write.Flush()
-	return content + `\n`
-}
-
-func push(msg string) {
-
-	var webhook *ini.Key
-	if chain == "104" {
-		webhook, err = cfg.Section("discord").GetKey("webhook")
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-	} else {
-		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-	}
-
-	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
-	fmt.Println(string(content))
-	req, err := http.NewRequest("POST", webhook.String(), bytes.NewBuffer(content))
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := (&http.Client{}).Do(req)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	defer resp.Body.Close()
-	respByte, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(respByte))
 }
 
 func pushDcFromConfigKey(configKey string, msg string) {
