@@ -553,7 +553,7 @@ func Html2Image(input string, output string) {
 	//cmd := exec.Command("wkhtmltoimage", "--quality", "100", "--disable-smart-width", "--width", "2400", "--zoom", "3", "--enable-local-file-access", input, output)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("failed to call cmd.Run(): %v", err)
+		fmt.Println(err.Error())
 	}
 }
 
