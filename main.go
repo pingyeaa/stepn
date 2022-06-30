@@ -17,10 +17,8 @@ import (
 	"gopkg.in/ini.v1"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 )
 
-var conn *gorm.DB
 var err error
 var cookie = ""
 var cfg *ini.File
@@ -191,11 +189,7 @@ func HandleScroll() {
 	rate := CalcRate("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
 	Insert("scroll-total.txt", fmt.Sprintf("%d", scrollTotal))
 	scrollVars["total"] = fmt.Sprintf("%d", scrollTotal)
-	if strings.Contains(rate, "-") {
-		scrollVars["rate"] = fmt.Sprintf(`<label style="color:red;">增幅 %s</label>`, rate)
-	} else {
-		scrollVars["rate"] = fmt.Sprintf(`<label style="color:green;">增幅 %s</label>`, rate)
-	}
+	scrollVars["rate"] = SetFloatColor(rate)
 
 	// 卷轴地板价
 	minPrice = 999999999
@@ -223,11 +217,7 @@ func HandleScroll() {
 	rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 	Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 	scrollVars["floor_price"] = fmt.Sprintf("%.2f", minPrice)
-	if strings.Contains(rate, "-") {
-		scrollVars["floor_rate"] = fmt.Sprintf(`<label style="color:red;">增幅 %s</label>`, rate)
-	} else {
-		scrollVars["floor_rate"] = fmt.Sprintf(`<label style="color:green;">增幅 %s</label>`, rate)
-	}
+	scrollVars["floor_rate"] = SetFloatColor(rate)
 
 	template := "templates/scroll.html"
 	newFile := fmt.Sprintf("o-%s-scroll.html", chain)
@@ -326,11 +316,7 @@ func HandleSneakerFloor() {
 	Insert("shoe-floor.txt", fmt.Sprintf("%f", minPrice))
 
 	sneakerFloorVars["floor"] = fmt.Sprintf("%.2f%s", minPrice, unitName)
-	if strings.Contains(rate, "-") {
-		sneakerFloorVars["rate"] = `<label style="color:red;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
-	} else {
-		sneakerFloorVars["rate"] = `<label style="color:green;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
-	}
+	sneakerFloorVars["rate"] = SetFloatColor(rate)
 
 	template := "templates/sneaker-floor.html"
 	newFile := fmt.Sprintf("o-%s-sneaker-floor.html", chain)
@@ -351,6 +337,16 @@ func HandleSneakerFloor() {
 		}
 	}
 	PushFile(newImage, webhook.String())
+}
+
+func SetFloatColor(rate string) string {
+	var output = ""
+	if strings.Contains(rate, "-") {
+		output = `<label style="color:red;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	} else {
+		output = `<label style="color:green;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	}
+	return output
 }
 
 func HandleSneakerNum() {
@@ -414,11 +410,7 @@ func HandleSneakerNum() {
 
 	rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
 	Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
-	if strings.Contains(rate, "-") {
-		sneakerNumVars["rate"] = `<label style="color:red;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
-	} else {
-		sneakerNumVars["rate"] = `<label style="color:green;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
-	}
+	sneakerNumVars["rate"] = SetFloatColor(rate)
 
 	newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
 
