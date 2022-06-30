@@ -202,6 +202,7 @@ func HandleScroll() {
 	price = floorPrice(701, 1, 100)
 	scrollVars["common_price"] = fmt.Sprintf("%.2fGMT", price)
 	minPrice = comparePrice(minPrice, price)
+	scrollMinPrice = minPrice
 
 	price = floorPrice(701, 2, 100)
 	scrollVars["uncommon_price"] = fmt.Sprintf("%.2fGMT", price)
@@ -218,8 +219,6 @@ func HandleScroll() {
 	price = floorPrice(701, 5, 100)
 	scrollVars["legendary_price"] = fmt.Sprintf("%.2fGMT", price)
 	minPrice = comparePrice(minPrice, price)
-
-	scrollMinPrice = minPrice
 
 	rate = CalcRate("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
 	Insert("scroll-floor.txt", fmt.Sprintf("%f", minPrice))
@@ -415,7 +414,11 @@ func HandleSneakerNum() {
 
 	rate = CalcRate("shoe-total.txt", fmt.Sprintf("%d", allTotal))
 	Insert("shoe-total.txt", fmt.Sprintf("%d", allTotal))
-	sneakerNumVars["rate"] = fmt.Sprintf("%s", rate)
+	if strings.Contains(rate, "-") {
+		sneakerNumVars["rate"] = `<label style="color:red;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	} else {
+		sneakerNumVars["rate"] = `<label style="color:green;">` + fmt.Sprintf(`增幅 %s`, rate) + `</label>`
+	}
 
 	newNum, oldNum, avgPrice, middlePrice := CalcDiffNumSneakers(sneakerPrice, newSneakerPrice)
 
