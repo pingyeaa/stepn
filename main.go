@@ -557,6 +557,187 @@ func HandleMint() {
 	PushFile(newImage, webhook.String())
 }
 
+func HandleGem() {
+
+	var minPrice float64 = 999999999
+	var price float64 = 0
+	var allTotal = 0
+	var total = 0
+	var vars = map[string]string{}
+	var unitName = ""
+	gemHandled = map[int]*Shoe{}
+
+	if chain == "103" {
+		vars["chain_name"] = "SOL"
+		unitName = "SOL"
+	} else if chain == "104" {
+		vars["chain_name"] = "BSC"
+		unitName = "BNB"
+	} else {
+		vars["chain_name"] = "ETH"
+		unitName = "ETH"
+	}
+	vars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	total = GemTotal(1)
+	vars["e_total"] = fmt.Sprintf("%d", total)
+	allTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = GemTotal(2)
+	vars["l_total"] = fmt.Sprintf("%d", total)
+	allTotal += total
+	time.Sleep(time.Second * 5)
+
+	total = GemTotal(3)
+	vars["c_total"] = fmt.Sprintf("%d", total)
+	allTotal += total
+	time.Sleep(time.Second * 4)
+
+	total = GemTotal(2)
+	vars["r_total"] = fmt.Sprintf("%d", total)
+	allTotal += total
+	time.Sleep(time.Second * 5)
+
+	rate := CalcRate("gem-total.txt", fmt.Sprintf("%d", allTotal))
+	Insert("gem-total.txt", fmt.Sprintf("%d", allTotal))
+	vars["total"] = fmt.Sprintf("%d", allTotal)
+	vars["rate"] = SetFloatColor(rate)
+
+	// 宝石地板价
+	minPrice = 999999999
+	price = GemFloorPrice(1)
+	vars["e_floor"] = fmt.Sprintf("%.2f%s", price, unitName)
+	minPrice = comparePrice(minPrice, price)
+	scrollMinPrice = minPrice
+
+	price = GemFloorPrice(2)
+	vars["l_floor"] = fmt.Sprintf("%.2f%s", price, unitName)
+	minPrice = comparePrice(minPrice, price)
+
+	price = GemFloorPrice(3)
+	vars["c_floor"] = fmt.Sprintf("%.2f%s", price, unitName)
+	minPrice = comparePrice(minPrice, price)
+
+	price = GemFloorPrice(4)
+	vars["r_floor"] = fmt.Sprintf("%.2f%s", price, unitName)
+	minPrice = comparePrice(minPrice, price)
+
+	rate = CalcRate("gem-floor.txt", fmt.Sprintf("%f", minPrice))
+	Insert("gem-floor.txt", fmt.Sprintf("%f", minPrice))
+	vars["floor_price"] = fmt.Sprintf("%.2f%s", minPrice, unitName)
+	vars["floor_rate"] = SetFloatColor(rate)
+
+	var gemGTypeLevelMapper = map[int]map[int]int{}
+	for _, gem := range gemHandled {
+		_, ok := gemGTypeLevelMapper[gem.GType]
+		if ok {
+			_, ok := gemGTypeLevelMapper[gem.GType][gem.Quantity]
+			if ok {
+				gemGTypeLevelMapper[gem.GType][gem.Quantity]++
+			} else {
+				gemGTypeLevelMapper[gem.GType][gem.Quantity] = 1
+			}
+		} else {
+			gemGTypeLevelMapper[gem.GType] = map[int]int{
+				gem.Quantity: 1,
+			}
+		}
+	}
+	fmt.Println(gemGTypeLevelMapper)
+
+	var eHtml = ``
+	for i := 1; i < 10; i++ {
+		number := 0
+		_, ok := gemGTypeLevelMapper[1]
+		if ok {
+			_, ok := gemGTypeLevelMapper[1][i]
+			if ok {
+				number = gemGTypeLevelMapper[1][i]
+				eHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, number)
+			} else {
+				eHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+			}
+		} else {
+			eHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+		}
+	}
+	vars["efficiency"] = eHtml
+
+	var lHtml = ``
+	for i := 1; i < 10; i++ {
+		number := 0
+		_, ok := gemGTypeLevelMapper[2]
+		if ok {
+			_, ok := gemGTypeLevelMapper[2][i]
+			if ok {
+				number = gemGTypeLevelMapper[2][i]
+				lHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, number)
+			} else {
+				lHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+			}
+		} else {
+			lHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+		}
+	}
+	vars["luck"] = lHtml
+
+	var cHtml = ``
+	for i := 1; i < 10; i++ {
+		number := 0
+		_, ok := gemGTypeLevelMapper[3]
+		if ok {
+			_, ok := gemGTypeLevelMapper[3][i]
+			if ok {
+				number = gemGTypeLevelMapper[3][i]
+				cHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, number)
+			} else {
+				cHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+			}
+		} else {
+			cHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+		}
+	}
+	vars["comfort"] = cHtml
+
+	var rHtml = ``
+	for i := 1; i < 10; i++ {
+		number := 0
+		_, ok := gemGTypeLevelMapper[4]
+		if ok {
+			_, ok := gemGTypeLevelMapper[4][i]
+			if ok {
+				number = gemGTypeLevelMapper[4][i]
+				rHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, number)
+			} else {
+				rHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+			}
+		} else {
+			rHtml += fmt.Sprintf(`<li>L%d:%d</li>`, i, 0)
+		}
+	}
+	vars["resilience"] = rHtml
+
+	template := "templates/gem.html"
+	newFile := fmt.Sprintf("o-%s-gem.html", chain)
+	newImage := chain + "-gem.jpg"
+	ReplaceVar(template, vars, newFile)
+	Html2Image(newFile, newImage)
+	var webhook *ini.Key
+	if chain == "104" {
+		webhook, err = cfg.Section("discord").GetKey("webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+	PushFile(newImage, webhook.String())
+}
+
 func HandleScroll() {
 
 	var minPrice float64 = 999999999
@@ -909,11 +1090,22 @@ func sneakerTotal(types int, quantity int) int {
 	var page = 0
 	var url = ""
 
+	// https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=1&chain=104&page=0&refresh=true
+	// https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=2&chain=104&page=0&refresh=true
+
 	for {
 		if page == 0 {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			if types == 501 {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			} else {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			}
 		} else {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			if types == 501 {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			} else {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			}
 		}
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
@@ -974,7 +1166,7 @@ func sneakerTotal(types int, quantity int) int {
 				}
 			}
 
-			if types != 701 {
+			if types != 701 && types != 501 {
 				newSneakerPrice[data.Otd] = data.SellPrice
 				if chain == "103" && data.Otd < 10000 {
 					data.TypeID = types
@@ -1012,9 +1204,17 @@ func sneakerTotalDesc(types int, quantity int) {
 
 	for {
 		if page == 0 {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			if types == 501 {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			} else {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+			}
 		} else {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			if types == 501 {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			} else {
+				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+			}
 		}
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
@@ -1086,7 +1286,7 @@ func sneakerTotalDesc(types int, quantity int) {
 				}
 			}
 
-			if types != 701 {
+			if types != 701 && types != 501 {
 				newSneakerPrice[data.Otd] = data.SellPrice
 				if chain == "103" && data.Otd < 10000 {
 					data.TypeID = types

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        @font-face {
+            font-family: '微软雅黑';
+            src: url("./fonts/yahei.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            width: 800px;
+            margin: 20px;
+            margin-top: 30px;
+            height: 350px;
+            color: black;
+            font-family: "微软雅黑";
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            float: left;
+            height: 40px;
+            list-style: none;
+            line-height: 40px;
+            text-align: center;
+            width: 60px;
+            border-right: solid 1px #cbcbcb;
+        }
+
+        .table {
+            font-size: 14px;
+            width: 740px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .fangkuai {
+            width: 100%;
+            height: 40px;
+            border-top: solid 1px #cbcbcb;
+        }
+
+        .clear {
+            clear: left;
+        }
+
+        .watermark {
+            width: 280px;
+            color: black;
+            pointer-events: none;
+            display: inline-block;
+            font-size: 24px;
+            position: absolute;
+            font-weight: bold;
+            opacity: 0.2;
+            left: 540px;
+            top: 30px;
+        }
+
+        .notice {
+            background-color: rgb(250, 224, 225);
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            padding-left: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 740px;
+        }
+
+        .statistic {
+            height: 50px;
+            width: 370px;
+            line-height: 50px;
+            background-color: #e0e0e0;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<span class="watermark">Twitter: @Buffybub</span>
+<div style="margin-bottom: 15px;">
+    <label style="font-size: 24px; font-weight: bold; color: darkorange;">宝石数据（{chain_name}）</label>
+    <label style="font-size: 16px; color: gray;">&nbsp;&nbsp;{time}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px; font-weight: bold;">总数：{total}</label>
+    <label style="font-weight: bold; color: red; font-size: 16px;">&nbsp;{rate}</label>
+</div>
+<div class="statistic" style="float: left; margin-right: 20px;">
+    <label style="font-size: 16px; font-weight: bold;">全网地板价：{floor_price}</label>
+</div>
+<div class="clear"></div>
+<div class="statistic" style="width: 760px;">
+    <label style="font-size: 16px;">
+        <label style="font-weight: bold">E地板 {e_floor}</label>｜
+        <label style="font-weight: bold">L地板 {l_floor}</label>｜
+        <label style="font-weight: bold">C地板 {c_floor}</label>｜
+        <label style="font-weight: bold">R地板 {r_floor}</label>
+    </label>
+</div>
+<!--<div class="statistic">-->
+<!--    <label style="font-size: 16px; font-weight: bold;">{below_price_e}以下E数量：{below_total_e}</label>-->
+<!--</div>-->
+<!--<div class="statistic" style="float: left; margin-right: 20px;">-->
+<!--    <label style="font-size: 16px; font-weight: bold;">{below_price_l}以下L数量：{below_total_l}</label>-->
+<!--</div>-->
+<!--<div class="statistic">-->
+<!--    <label style="font-size: 16px; font-weight: bold;">{below_price_c}以下C数量：{below_total_c}</label>-->
+<!--</div>-->
+<!--<div class="statistic" style="float: left; margin-right: 20px;">-->
+<!--    <label style="font-size: 16px; font-weight: bold;">{below_price_r}以下R数量：{below_total_r}</label>-->
+<!--</div>-->
+<div class="clear"></div>
+<div class="table" style="background-color: rgb(255,251,226);">
+    <div class="clear"></div>
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb; font-weight: bold;">E</li>
+            {efficiency}
+            <li style="border-right: none; font-weight: bold; width: auto;">&nbsp;&nbsp;&nbsp;总: {e_total}</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(217,225,245);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb; font-weight: bold;">L</li>
+            {luck}
+            <li style="border-right: none; font-weight: bold; width: auto;">&nbsp;&nbsp;&nbsp;总: {l_total}</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(255,228,228);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb; font-weight: bold;">C</li>
+            {comfort}
+            <li style="border-right: none; font-weight: bold; width: auto;">&nbsp;&nbsp;&nbsp;总: {c_total}</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(246,238,255);">
+    <div class="fangkuai" style="border-top: none;">
+        <ul>
+            <li style="border-right: solid 1px #cbcbcb; font-weight: bold;">R</li>
+            {resilience}
+            <li style="border-right: none; font-weight: bold; width: auto;">&nbsp;&nbsp;&nbsp;总: {r_total}</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<br>
+
+</body>
+</html>

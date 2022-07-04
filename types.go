@@ -9,6 +9,7 @@ type Shoe struct {
 	ID        int    `json:"id"`
 	TypeID    int    `json:"type_id"`
 	TypeName  string `json:"type_name"`
+	GType     int    `json:"gType"`
 	Color     string `json:"color"`
 	Otd       int    `json:"otd"`
 	Time      int    `json:"time"`

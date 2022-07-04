@@ -12,7 +12,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"gopkg.in/fatih/set.v0"
 )
@@ -270,237 +269,6 @@ func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, f
 	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, solPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
 }
 
-func GenesShoes() {
-
-	var msg []string
-
-	msg = append(msg, `\n`)
-	if chain == "104" {
-		msg = append(msg, `👑 创世数据（BSC）\n`)
-		msg = append(msg, `————————————————\n`)
-	}
-	if chain == "103" {
-		msg = append(msg, `👑 创世数据（Sol）\n`)
-		msg = append(msg, `————————————————\n`)
-	}
-
-	var genesOtd []int
-	for _, shoe := range genesShoes {
-		genesOtd = append(genesOtd, shoe.Otd)
-	}
-	genesOtd = RemoveDuplicateElement(genesOtd)
-	sort.Ints(genesOtd)
-
-	var minPrice = 999999999999
-
-	unitName := ""
-	if chain == "104" {
-		unitName = "BNB"
-	}
-	if chain == "103" {
-		unitName = "Sol"
-	}
-
-	var handled = map[int]int{}
-	for _, otd := range genesOtd {
-		for _, shoe := range genesShoes {
-			if otd == shoe.Otd {
-
-				// 重复鞋子出现5次就退出
-				_, ok := handled[shoe.Otd]
-				if ok {
-					continue
-				}
-
-				color := ""
-				if shoe.Quantity == 1 {
-					color = "灰"
-				}
-				if shoe.Quantity == 2 {
-					color = "绿"
-				}
-				if shoe.Quantity == 3 {
-					color = "蓝"
-				}
-				if shoe.Quantity == 4 {
-					color = "紫"
-				}
-				if shoe.Quantity == 5 {
-					color = "橙"
-				}
-
-				typeName := ""
-				if shoe.TypeID == 601 {
-					typeName = "W"
-				}
-				if shoe.TypeID == 602 {
-					typeName = "J"
-				}
-				if shoe.TypeID == 603 {
-					typeName = "R"
-				}
-				if shoe.TypeID == 604 {
-					typeName = "T"
-				}
-
-				if minPrice > shoe.SellPrice {
-					minPrice = shoe.SellPrice
-				}
-
-				msg = append(msg, fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName))
-				handled[shoe.Otd] = 1
-			}
-		}
-	}
-
-	if len(genesShoes) == 0 {
-		msg = append(msg, `暂无数据\n`)
-	}
-	msg = append(msg, `————————————————\n`)
-	msg = append(msg, fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd)))
-
-	prevTotalValue := FindLatest("genes-total.txt")
-	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
-		rate := CalcRate("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
-		Insert("genes-total.txt", fmt.Sprintf("%d", len(genesShoes)))
-		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesShoes))-prevTotal, rate))
-	}
-
-	if len(genesShoes) == 0 {
-		msg = append(msg, fmt.Sprintf(`地板价：0%s`, unitName))
-	} else {
-		msg = append(msg, fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName))
-	}
-
-	var totalLength int
-	for _, s := range msg {
-		totalLength += len(s)
-	}
-	if totalLength > 5800 {
-		msgCount := len(msg)
-		pushToGenes(strings.Join(msg[:msgCount/3], ""))
-		pushToGenes(strings.Join(msg[msgCount/3:msgCount/2], ""))
-		pushToGenes(strings.Join(msg[msgCount/2:], ""))
-	} else if totalLength > 1900 {
-		msgCount := len(msg)
-		pushToGenes(strings.Join(msg[:msgCount/2], ""))
-		pushToGenes(strings.Join(msg[msgCount/2:], ""))
-	} else {
-		pushToGenes(strings.Join(msg, ""))
-	}
-
-	return
-}
-
-func Genesis23wShoes() {
-
-	var msg []string
-
-	msg = append(msg, `\n`)
-	msg = append(msg, fmt.Sprintf(`👑 BSC_OG_%s\n`, time.Now().Format("20060102150405")))
-	msg = append(msg, `————————————————\n`)
-
-	var genesOtd []int
-	for _, shoe := range genesis23w {
-		genesOtd = append(genesOtd, shoe.Otd)
-	}
-	genesOtd = RemoveDuplicateElement(genesOtd)
-	sort.Ints(genesOtd)
-
-	var minPrice = 999999999999
-
-	unitName := "BNB"
-
-	var handled = map[int]int{}
-	for _, otd := range genesOtd {
-		for _, shoe := range genesis23w {
-			if otd == shoe.Otd {
-
-				_, ok := handled[shoe.Otd]
-				if ok {
-					continue
-				}
-
-				color := ""
-				if shoe.Quantity == 1 {
-					color = "灰"
-				}
-				if shoe.Quantity == 2 {
-					color = "绿"
-				}
-				if shoe.Quantity == 3 {
-					color = "蓝"
-				}
-				if shoe.Quantity == 4 {
-					color = "紫"
-				}
-				if shoe.Quantity == 5 {
-					color = "橙"
-				}
-
-				typeName := ""
-				if shoe.TypeID == 601 {
-					typeName = "W"
-				}
-				if shoe.TypeID == 602 {
-					typeName = "J"
-				}
-				if shoe.TypeID == 603 {
-					typeName = "R"
-				}
-				if shoe.TypeID == 604 {
-					typeName = "T"
-				}
-
-				if minPrice > shoe.SellPrice {
-					minPrice = shoe.SellPrice
-				}
-
-				msg = append(msg, fmt.Sprintf(`#%d：%s%s，Lv%d，Mint%d，%.2f%s\n`, shoe.Otd, color, typeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName))
-				handled[shoe.Otd] = 1
-			}
-		}
-	}
-
-	if len(genesis23w) == 0 {
-		msg = append(msg, `暂无数据\n`)
-	}
-	msg = append(msg, `————————————————\n`)
-	msg = append(msg, fmt.Sprintf(`挂售总数：%d\n`, len(genesOtd)))
-
-	prevTotalValue := FindLatest("genesis23w-total.txt")
-	if prevTotal, err := strconv.ParseFloat(prevTotalValue, 64); err == nil {
-		rate := CalcRate("genesis23w-total.txt", fmt.Sprintf("%d", len(genesis23w)))
-		Insert("genesis23w-total.txt", fmt.Sprintf("%d", len(genesis23w)))
-		msg = append(msg, fmt.Sprintf(`新增：%.f｜增幅：%s\n`, float64(len(genesis23w))-prevTotal, rate))
-	}
-
-	if len(genesis23w) == 0 {
-		msg = append(msg, fmt.Sprintf(`地板价：0%s`, unitName))
-	} else {
-		msg = append(msg, fmt.Sprintf(`地板价：%.2f%s`, float64(minPrice)/1000000, unitName))
-	}
-
-	var totalLength int
-	for _, s := range msg {
-		totalLength += len(s)
-	}
-	if totalLength > 5800 {
-		msgCount := len(msg)
-		pushToGenesis23w(strings.Join(msg[:msgCount/3], ""))
-		pushToGenesis23w(strings.Join(msg[msgCount/3:msgCount/2], ""))
-		pushToGenesis23w(strings.Join(msg[msgCount/2:], ""))
-	} else if totalLength > 1900 {
-		msgCount := len(msg)
-		pushToGenesis23w(strings.Join(msg[:msgCount/2], ""))
-		pushToGenesis23w(strings.Join(msg[msgCount/2:], ""))
-	} else {
-		pushToGenesis23w(strings.Join(msg, ""))
-	}
-
-	return
-}
-
 func IsAwesomeNum(num int) bool {
 	var awesomePool []string
 	for i := 1; i < 10; i++ {
@@ -573,4 +341,27 @@ func ReplaceVar(template string, vars map[string]string, newFile string) {
 	write := bufio.NewWriter(file)
 	write.WriteString(content)
 	write.Flush()
+}
+
+func Get(url string) []byte {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	req.Header.Set("cookie", cookie)
+	req.Header.Set("accept", "application/json")
+	req.Header.Set("accept-language", "zh-CN")
+	req.Header.Set("host", "apilb.stepn.com")
+	req.Header.Set("group", "173224989")
+	resp, err := (&http.Client{}).Do(req)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	defer resp.Body.Close()
+	respByte, _ := ioutil.ReadAll(resp.Body)
+	if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
+		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+	}
+	return respByte
 }
