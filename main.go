@@ -289,7 +289,7 @@ func HandleGenesis() {
 	ogVars["legendary"] = legendaryHtml
 
 	ogVars["total"] = fmt.Sprintf("%d", len(genesOtd))
-	ogVars["floor"] = fmt.Sprintf("%.2fBNB", float64(minPrice)/1000000)
+	ogVars["floor"] = fmt.Sprintf("%.2f%s", float64(minPrice)/1000000, unitName)
 
 	// export image & push to discord
 	template := "templates/sneaker-genesis.html"
