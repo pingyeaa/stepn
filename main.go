@@ -84,7 +84,7 @@ func main() {
 		sneakerPrice = map[int]int{}
 
 		// 推创世
-		GenesShoes()
+		HandleGenesis()
 
 		// 推OG
 		if chain == "104" {
@@ -93,6 +93,211 @@ func main() {
 
 		time.Sleep(time.Second * 300)
 	}
+}
+
+func HandleGenesis() {
+
+	var ogVars = map[string]string{}
+	var genesOtd []int
+	var handled = map[int]*Shoe{}
+	var uniqueCommon = map[int]*Shoe{}
+	var uniqueUncommon = map[int]*Shoe{}
+	var uniqueRare = map[int]*Shoe{}
+	var uniqueEpic = map[int]*Shoe{}
+	var uniqueLegendary = map[int]*Shoe{}
+	var minPrice = 9999999999
+	var count = 0
+
+	if chain == "104" {
+		ogVars["chain_name"] = "BSC"
+	} else if chain == "103" {
+		ogVars["chain_name"] = "SOL"
+	} else {
+		ogVars["chain_name"] = "ETH"
+	}
+	ogVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
+
+	// 创世鞋排序
+	for _, shoe := range genesShoes {
+		genesOtd = append(genesOtd, shoe.Otd)
+	}
+	genesOtd = RemoveDuplicateElement(genesOtd)
+	sort.Ints(genesOtd)
+
+	// OG去重复
+	for _, otd := range genesOtd {
+		for _, shoe := range genesShoes {
+			if otd == shoe.Otd {
+				_, ok := handled[shoe.Otd]
+				if ok {
+					continue
+				}
+				handled[shoe.Otd] = shoe
+				qualityMapper := map[int]string{1: "灰", 2: "绿", 3: "蓝", 4: "紫", 5: "橙"}
+				typesMapper := map[int]string{601: "W", 602: "J", 603: "R", 604: "T"}
+				shoe.Color = qualityMapper[shoe.Quantity]
+				shoe.TypeName = typesMapper[shoe.TypeID]
+				if minPrice > shoe.SellPrice {
+					minPrice = shoe.SellPrice
+				}
+				if shoe.Quantity == 1 {
+					uniqueCommon[shoe.Otd] = shoe
+				}
+				if shoe.Quantity == 2 {
+					uniqueUncommon[shoe.Otd] = shoe
+				}
+				if shoe.Quantity == 3 {
+					uniqueRare[shoe.Otd] = shoe
+				}
+				if shoe.Quantity == 4 {
+					uniqueEpic[shoe.Otd] = shoe
+				}
+				if shoe.Quantity == 5 {
+					uniqueLegendary[shoe.Otd] = shoe
+				}
+			}
+		}
+	}
+
+	// common html
+	var commonHtml = ``
+	if len(uniqueCommon) == 0 {
+		commonHtml = "   暂无数据"
+	}
+	count = 0
+	for _, shoe := range uniqueCommon {
+		style := `border-top: none;`
+		if count == len(uniqueCommon)-1 {
+			style = `border-top: none; border-bottom: none;`
+		}
+		count++
+		commonHtml += fmt.Sprintf(`
+		<div class="fangkuai" style="%s">
+			<ul>
+				<li>#%d</li>
+				<li>%s-%s</li>
+				<li>Lv%d</li>
+				<li>Mint%d</li>
+				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+			</ul>
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+	}
+	ogVars["common"] = commonHtml
+
+	// uncommon html
+	var uncommonHtml = ``
+	if len(uniqueUncommon) == 0 {
+		uncommonHtml = "   暂无数据"
+	}
+	count = 0
+	for _, shoe := range uniqueUncommon {
+		style := `border-top: none;`
+		if count == len(uniqueUncommon)-1 {
+			style = `border-top: none; border-bottom: none;`
+		}
+		count++
+		uncommonHtml += fmt.Sprintf(`
+		<div class="fangkuai" style="%s">
+			<ul>
+				<li>#%d</li>
+				<li>%s-%s</li>
+				<li>Lv%d</li>
+				<li>Mint%d</li>
+				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+			</ul>
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+	}
+	ogVars["uncommon"] = uncommonHtml
+
+	// rare html
+	var rareHtml = ``
+	if len(uniqueRare) == 0 {
+		rareHtml = "   暂无数据"
+	}
+	count = 0
+	for _, shoe := range uniqueRare {
+		style := `border-top: none;`
+		if count == len(uniqueRare)-1 {
+			style = `border-top: none; border-bottom: none;`
+		}
+		count++
+		rareHtml += fmt.Sprintf(`
+		<div class="fangkuai" style="%s">
+			<ul>
+				<li>#%d</li>
+				<li>%s-%s</li>
+				<li>Lv%d</li>
+				<li>Mint%d</li>
+				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+			</ul>
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+	}
+	ogVars["rare"] = rareHtml
+
+	// epic html
+	var epicHtml = ``
+	if len(uniqueEpic) == 0 {
+		epicHtml = "   暂无数据"
+	}
+	count = 0
+	for _, shoe := range uniqueEpic {
+		style := `border-top: none;`
+		if count == len(uniqueEpic)-1 {
+			style = `border-top: none; border-bottom: none;`
+		}
+		count++
+		epicHtml += fmt.Sprintf(`
+		<div class="fangkuai" style="%s">
+			<ul>
+				<li>#%d</li>
+				<li>%s-%s</li>
+				<li>Lv%d</li>
+				<li>Mint%d</li>
+				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+			</ul>
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+	}
+	ogVars["epic"] = epicHtml
+
+	// legendary html
+	var legendaryHtml = ``
+	if len(uniqueLegendary) == 0 {
+		legendaryHtml = "   暂无数据"
+	}
+	count = 0
+	for _, shoe := range uniqueLegendary {
+		style := `border-top: none;`
+		if count == len(uniqueLegendary)-1 {
+			style = `border-top: none; border-bottom: none;`
+		}
+		count++
+		legendaryHtml += fmt.Sprintf(`
+		<div class="fangkuai" style="%s">
+			<ul>
+				<li>#%d</li>
+				<li>%s-%s</li>
+				<li>Lv%d</li>
+				<li>Mint%d</li>
+				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+			</ul>
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+	}
+	ogVars["legendary"] = legendaryHtml
+
+	ogVars["total"] = fmt.Sprintf("%d", len(genesOtd))
+	ogVars["floor"] = fmt.Sprintf("%.2fBNB", float64(minPrice)/1000000)
+
+	// export image & push to discord
+	template := "templates/sneaker-genesis.html"
+	newFile := fmt.Sprintf("o-%s-sneaker-genesis.html", chain)
+	newImage := chain + "-sneaker_genesis.jpg"
+	ReplaceVar(template, ogVars, newFile)
+	Html2Image(newFile, newImage)
+	webhook, err := cfg.Section("discord").GetKey("genes_webhook")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	PushFile(newImage, webhook.String())
 }
 
 func HandleOG() {
