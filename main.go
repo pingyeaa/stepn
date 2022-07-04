@@ -107,13 +107,17 @@ func HandleGenesis() {
 	var uniqueLegendary = map[int]*Shoe{}
 	var minPrice = 9999999999
 	var count = 0
+	var unitName = ""
 
 	if chain == "104" {
 		ogVars["chain_name"] = "BSC"
+		unitName = "BNB"
 	} else if chain == "103" {
 		ogVars["chain_name"] = "SOL"
+		unitName = "SOL"
 	} else {
 		ogVars["chain_name"] = "ETH"
+		unitName = "ETH"
 	}
 	ogVars["time"] = fmt.Sprintf(`%s`, time.Now().Format("2006-01-02 15:04:05"))
 
@@ -178,9 +182,9 @@ func HandleGenesis() {
 				<li>%s-%s</li>
 				<li>Lv%d</li>
 				<li>Mint%d</li>
-				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+				<li style="border-right: none; width: 150px;">  %.2f%s</li>
 			</ul>
-		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 	}
 	ogVars["common"] = commonHtml
 
@@ -203,9 +207,9 @@ func HandleGenesis() {
 				<li>%s-%s</li>
 				<li>Lv%d</li>
 				<li>Mint%d</li>
-				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+				<li style="border-right: none; width: 150px;">  %.2f%s</li>
 			</ul>
-		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 	}
 	ogVars["uncommon"] = uncommonHtml
 
@@ -228,9 +232,9 @@ func HandleGenesis() {
 				<li>%s-%s</li>
 				<li>Lv%d</li>
 				<li>Mint%d</li>
-				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+				<li style="border-right: none; width: 150px;">  %.2f%s</li>
 			</ul>
-		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 	}
 	ogVars["rare"] = rareHtml
 
@@ -253,9 +257,9 @@ func HandleGenesis() {
 				<li>%s-%s</li>
 				<li>Lv%d</li>
 				<li>Mint%d</li>
-				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+				<li style="border-right: none; width: 150px;">  %.2f%s</li>
 			</ul>
-		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 	}
 	ogVars["epic"] = epicHtml
 
@@ -278,9 +282,9 @@ func HandleGenesis() {
 				<li>%s-%s</li>
 				<li>Lv%d</li>
 				<li>Mint%d</li>
-				<li style="border-right: none; width: 150px;">  %.2fBNB</li>
+				<li style="border-right: none; width: 150px;">  %.2f%s</li>
 			</ul>
-		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000)
+		</div>`, style, shoe.Otd, shoe.Color, shoe.TypeName, shoe.Level, shoe.Mint, float64(shoe.SellPrice)/1000000, unitName)
 	}
 	ogVars["legendary"] = legendaryHtml
 
