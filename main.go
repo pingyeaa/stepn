@@ -664,7 +664,7 @@ func HandleSneakerNum() {
 		}
 	}
 	fmt.Println(webhook)
-	//PushFile(newImage, webhook.String())
+	PushFile(newImage, webhook.String())
 }
 
 func AutoSetSneakerVar(types int, quality int, varName string) int {
