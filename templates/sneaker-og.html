@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        @font-face {
+            font-family: '微软雅黑';
+            src: url("./fonts/yahei.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            width: 800px;
+            margin: 20px;
+            margin-top: 30px;
+            height: 350px;
+            color: black;
+            font-family: "微软雅黑";
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            float: left;
+            height: 40px;
+            list-style: none;
+            line-height: 40px;
+            text-align: center;
+            width: 120px;
+            border-right: solid 1px #cbcbcb;
+        }
+
+        .table {
+            font-size: 16px;
+            width: 740px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .fangkuai {
+            width: 100%;
+            height: 40px;
+            border-top: solid 1px #cbcbcb;
+            border-bottom: solid 1px #cbcbcb;
+        }
+
+        .clear {
+            clear: left;
+        }
+
+        .watermark {
+            width: 250px;
+            color: black;
+            pointer-events: none;
+            display: inline-block;
+            font-size: 24px;
+            position: absolute;
+            font-weight: bold;
+            opacity: 0.2;
+            left: 520px;
+            top: 30px;
+        }
+
+        .statistic {
+            height: 50px;
+            width: 370px;
+            line-height: 50px;
+            background-color: #e0e0e0;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<span class="watermark">Twitter: @Buffybub</span>
+<div style="margin-bottom: 15px;">
+    <label style="font-size: 24px; font-weight: bold; color: darkorange;">OG鞋子（{chain_name}）</label>
+    <label style="font-size: 16px; color: gray;">&nbsp;&nbsp;{time}</label>
+</div>
+<div class="statistic">
+    <label style="font-size: 16px; font-weight: bold;">挂售总数：{total}</label>
+</div>
+<div class="statistic" style="float: left; margin-right: 20px;">
+    <label style="font-size: 16px; font-weight: bold;">地板价：{floor}</label>
+</div>
+<div class="clear"></div>
+<div class="table" style="background-color: rgb(232,232,232);">
+    {common}
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(222,250,238);">
+    {uncommon}
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(228,235,253);">
+    {rare}
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(245,238,253);">
+    {epic}
+    <div class="clear"></div>
+</div>
+<div class="table" style="background-color: rgb(253,241,234);">
+    {legendary}
+    <div class="clear"></div>
+</div>
+<br>
+
+</body>
+</html>

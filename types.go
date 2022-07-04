@@ -8,6 +8,8 @@ type OrderList struct {
 type Shoe struct {
 	ID        int    `json:"id"`
 	TypeID    int    `json:"type_id"`
+	TypeName  string `json:"type_name"`
+	Color     string `json:"color"`
 	Otd       int    `json:"otd"`
 	Time      int    `json:"time"`
 	PropID    int    `json:"propID"`
