@@ -290,11 +290,11 @@ func HandleOG() {
 	newImage := chain + "-sneaker_og.jpg"
 	ReplaceVar(template, ogVars, newFile)
 	Html2Image(newFile, newImage)
-	//webhook, err := cfg.Section("discord").GetKey("genesis23w_webhook")
+	webhook, err := cfg.Section("discord").GetKey("genesis23w_webhook")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	//PushFile(newImage, webhook.String())
+	PushFile(newImage, webhook.String())
 }
 
 func HandleMint() {
