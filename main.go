@@ -645,7 +645,6 @@ func HandleGem() {
 			}
 		}
 	}
-	fmt.Println(gemGTypeLevelMapper)
 
 	var eHtml = ``
 	for i := 1; i < 10; i++ {
@@ -718,6 +717,13 @@ func HandleGem() {
 		}
 	}
 	vars["resilience"] = rHtml
+
+	belowPrice, belowTotals := GetPriceBelowNextPrice(gemHandled)
+	vars["below_price"] = fmt.Sprintf("%.2f%s", belowPrice, unitName)
+	vars["below_total_e"] = fmt.Sprintf("%d", belowTotals[1])
+	vars["below_total_l"] = fmt.Sprintf("%d", belowTotals[2])
+	vars["below_total_c"] = fmt.Sprintf("%d", belowTotals[3])
+	vars["below_total_r"] = fmt.Sprintf("%d", belowTotals[4])
 
 	template := "templates/gem.html"
 	newFile := fmt.Sprintf("o-%s-gem.html", chain)

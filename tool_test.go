@@ -196,4 +196,24 @@ func TestGetFileContent(t *testing.T) {
 	//ReplaceVar(template, vars, newFile)
 	//Html2Image(newFile, newImage)
 	//PushFile(newImage)
+
+	nfts := map[int]*Shoe{
+		1: {
+			GType:     1,
+			Otd:       1,
+			SellPrice: 10000,
+		},
+		2: {
+			GType:     2,
+			Otd:       2,
+			SellPrice: 12300000,
+		},
+		3: {
+			GType:     3,
+			Otd:       3,
+			SellPrice: 12300000,
+		},
+	}
+	p, o := GetPriceBelowNextPrice(nfts)
+	fmt.Println(p, o)
 }
