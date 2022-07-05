@@ -593,9 +593,9 @@ func HandleGem() {
 	total = GemTotal(3)
 	vars["c_total"] = fmt.Sprintf("%d", total)
 	allTotal += total
-	time.Sleep(time.Second * 4)
+	time.Sleep(time.Second * 5)
 
-	total = GemTotal(2)
+	total = GemTotal(4)
 	vars["r_total"] = fmt.Sprintf("%d", total)
 	allTotal += total
 	time.Sleep(time.Second * 5)
