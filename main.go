@@ -1129,8 +1129,14 @@ func sneakerTotal(types int, quantity int) int {
 			log.Fatalln(err.Error())
 		}
 		defer resp.Body.Close()
-		respByte, _ := ioutil.ReadAll(resp.Body)
+		respByte, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 		if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
+			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+		}
+		if string(respByte) == `{"code":102001,"msg":"102001"}` {
 			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
 		}
 
