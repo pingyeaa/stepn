@@ -1248,6 +1248,9 @@ func sneakerTotalDesc(types int, quantity int) {
 		if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
 			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
 		}
+		if string(respByte) == `{"code":102001,"msg":"102001"}` {
+			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+		}
 
 		var orderList OrderList
 		err = json.Unmarshal(respByte, &orderList)
@@ -1316,7 +1319,7 @@ func sneakerTotalDesc(types int, quantity int) {
 			}
 		}
 
-		fmt.Print(".")
+		fmt.Print("x")
 
 		page++
 		time.Sleep(time.Second)
@@ -1346,6 +1349,9 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 	defer resp.Body.Close()
 	respByte, _ := ioutil.ReadAll(resp.Body)
 	if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
+		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+	}
+	if string(respByte) == `{"code":102001,"msg":"102001"}` {
 		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
 	}
 
