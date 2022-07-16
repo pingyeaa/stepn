@@ -1097,21 +1097,21 @@ func sneakerTotal(types int, quantity int) int {
 	var page = 0
 	var url = ""
 
-	// https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=1&chain=104&page=0&refresh=true
-	// https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=2&chain=104&page=0&refresh=true
+	// https://api.stepn.com/run/orderlist?order=2001&type=501&gType=1&chain=104&page=0&refresh=true
+	// https://api.stepn.com/run/orderlist?order=2001&type=501&gType=2&chain=104&page=0&refresh=true
 
 	for {
 		if page == 0 {
 			if types == 501 {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
 			} else {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
 			}
 		} else {
 			if types == 501 {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 			} else {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 			}
 		}
 		req, err := http.NewRequest("GET", url, nil)
@@ -1122,7 +1122,7 @@ func sneakerTotal(types int, quantity int) int {
 		req.Header.Set("cookie", cookie)
 		req.Header.Set("accept", "application/json")
 		req.Header.Set("accept-language", "zh-CN")
-		req.Header.Set("host", "apilb.stepn.com")
+		req.Header.Set("host", "api.stepn.com")
 		req.Header.Set("group", "173224989")
 		resp, err := (&http.Client{}).Do(req)
 		if err != nil {
@@ -1218,15 +1218,15 @@ func sneakerTotalDesc(types int, quantity int) {
 	for {
 		if page == 0 {
 			if types == 501 {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
 			} else {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
 			}
 		} else {
 			if types == 501 {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 			} else {
-				url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
 			}
 		}
 		req, err := http.NewRequest("GET", url, nil)
@@ -1237,7 +1237,7 @@ func sneakerTotalDesc(types int, quantity int) {
 		req.Header.Set("cookie", cookie)
 		req.Header.Set("accept", "application/json")
 		req.Header.Set("accept-language", "zh-CN")
-		req.Header.Set("host", "apilb.stepn.com")
+		req.Header.Set("host", "api.stepn.com")
 		req.Header.Set("group", "173224989")
 		resp, err := (&http.Client{}).Do(req)
 		if err != nil {
@@ -1332,7 +1332,7 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 
 	time.Sleep(time.Second * 1)
 
-	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
+	var url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatalln(err.Error())
@@ -1340,7 +1340,7 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 	req.Header.Set("cookie", cookie)
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("accept-language", "zh-CN")
-	req.Header.Set("host", "apilb.stepn.com")
+	req.Header.Set("host", "api.stepn.com")
 	req.Header.Set("group", "173224989")
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
