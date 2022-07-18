@@ -92,7 +92,16 @@ func main() {
 			HandleOG()
 		}
 
-		time.Sleep(time.Second * 300)
+		// 不加服务器临时方案
+		if chain == "104" {
+			chain = "101"
+			time.Sleep(time.Second * 300)
+		} else if chain == "101" {
+			chain = "104"
+			time.Sleep(time.Second * 300)
+		} else {
+			time.Sleep(time.Second * 300)
+		}
 	}
 }
 
@@ -527,7 +536,7 @@ func HandleMint() {
 		sneakerMintVars["upgrade_price_u"] = fmt.Sprintf("%.4fU", 20*gstPrice+10*gmtPrice)
 		sneakerMintVars["sneaker_floor_price_u"] = fmt.Sprintf("%.4fBNB", sneakerMinPrice)
 		sneakerMintVars["formula"] = profit
-	} else {
+	} else if chain == "103" {
 		gstPrice, gmtPrice, profit := CalcMintProfitForSol(sneakerMinPrice, scrollMinPrice)
 		sneakerMintVars["gst_price_u"] = fmt.Sprintf("%.4fU", gstPrice)
 		sneakerMintVars["gmt_price_u"] = fmt.Sprintf("%.4fU", gmtPrice)
@@ -536,6 +545,8 @@ func HandleMint() {
 		sneakerMintVars["upgrade_price_u"] = fmt.Sprintf("%.4fU", 20*gstPrice+10*gmtPrice)
 		sneakerMintVars["sneaker_floor_price_u"] = fmt.Sprintf("%.4fSol", sneakerMinPrice)
 		sneakerMintVars["formula"] = profit
+	} else {
+
 	}
 
 	template := "templates/sneaker-mint.html"
@@ -549,8 +560,13 @@ func HandleMint() {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-	} else {
+	} else if chain == "103" {
 		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("eth_webhook")
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
@@ -736,8 +752,13 @@ func HandleGem() {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-	} else {
+	} else if chain == "103" {
 		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("eth_webhook")
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
@@ -830,8 +851,13 @@ func HandleScroll() {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-	} else {
+	} else if chain == "103" {
 		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("eth_webhook")
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
@@ -930,8 +956,13 @@ func HandleSneakerFloor() {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-	} else {
+	} else if chain == "103" {
 		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("eth_webhook")
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
@@ -1054,8 +1085,13 @@ func HandleSneakerNum() {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-	} else {
+	} else if chain == "103" {
 		webhook, err = cfg.Section("discord").GetKey("sol_webhook")
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	} else {
+		webhook, err = cfg.Section("discord").GetKey("eth_webhook")
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
@@ -1452,12 +1488,4 @@ func PushFile(filePath string, webhook string) {
 		return
 	}
 	fmt.Println(string(body))
-}
-
-func pushToGenes(msg string) {
-	pushDcFromConfigKey("genes_webhook", msg)
-}
-
-func pushToGenesis23w(msg string) {
-	pushDcFromConfigKey("genesis23w_webhook", msg)
 }
