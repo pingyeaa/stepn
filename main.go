@@ -94,11 +94,11 @@ func main() {
 
 		// 不加服务器临时方案
 		if chain == "104" {
-			//chain = "101"
-			time.Sleep(time.Second * 300)
+			chain = "101"
+			time.Sleep(time.Second * 200)
 		} else if chain == "101" {
-			//chain = "104"
-			time.Sleep(time.Second * 300)
+			chain = "104"
+			time.Sleep(time.Second * 200)
 		} else {
 			time.Sleep(time.Second * 300)
 		}
@@ -1185,6 +1185,7 @@ func sneakerTotal(types int, quantity int) int {
 		}
 
 		if orderList.Data == nil || len(orderList.Data) == 0 {
+			fmt.Print("o")
 			break
 		}
 
@@ -1297,6 +1298,7 @@ func sneakerTotalDesc(types int, quantity int) {
 		}
 
 		if orderList.Data == nil || len(orderList.Data) == 0 {
+			fmt.Print("o")
 			break
 		}
 
@@ -1420,27 +1422,6 @@ func comparePrice(price1 float64, price2 float64) float64 {
 		return price2
 	}
 	return price1
-}
-
-func pushDcFromConfigKey(configKey string, msg string) {
-	webhook, err := cfg.Section("discord").GetKey(configKey)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	content := []byte(fmt.Sprintf(`{"content":"%s"}`, msg))
-	fmt.Println(string(content))
-	req, err := http.NewRequest("POST", webhook.String(), bytes.NewBuffer(content))
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := (&http.Client{}).Do(req)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	defer resp.Body.Close()
-	respByte, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(respByte))
 }
 
 func PushFile(filePath string, webhook string) {
