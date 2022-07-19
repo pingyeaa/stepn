@@ -74,9 +74,12 @@ func main() {
 
 		HandleSneakerNum()
 		HandleSneakerFloor()
-		HandleScroll()
-		HandleMint()
-		HandleGem()
+
+		if chain != "101" {
+			HandleScroll()
+			HandleMint()
+			HandleGem()
+		}
 
 		// 给老的存起来，新的清空
 		newSneakerPriceByte, _ := json.Marshal(newSneakerPrice)
