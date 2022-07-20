@@ -74,11 +74,11 @@ func main() {
 
 		HandleSneakerNum()
 		HandleSneakerFloor()
+		HandleScroll()
+		HandleGem()
 
 		if chain != "101" {
-			HandleScroll()
 			HandleMint()
-			HandleGem()
 		}
 
 		// 给老的存起来，新的清空
@@ -738,11 +738,19 @@ func HandleGem() {
 	vars["resilience"] = rHtml
 
 	belowPrice, belowTotals := GetPriceBelowNextPrice(gemHandled)
-	vars["below_price"] = fmt.Sprintf("%.2f%s", belowPrice, unitName)
-	vars["below_total_e"] = fmt.Sprintf("%d", belowTotals[1])
-	vars["below_total_l"] = fmt.Sprintf("%d", belowTotals[2])
-	vars["below_total_c"] = fmt.Sprintf("%d", belowTotals[3])
-	vars["below_total_r"] = fmt.Sprintf("%d", belowTotals[4])
+	if chain == "101" {
+		vars["below_price"] = "0"
+		vars["below_total_e"] = "0"
+		vars["below_total_l"] = "0"
+		vars["below_total_c"] = "0"
+		vars["below_total_r"] = "0"
+	} else {
+		vars["below_price"] = fmt.Sprintf("%.2f%s", belowPrice, unitName)
+		vars["below_total_e"] = fmt.Sprintf("%d", belowTotals[1])
+		vars["below_total_l"] = fmt.Sprintf("%d", belowTotals[2])
+		vars["below_total_c"] = fmt.Sprintf("%d", belowTotals[3])
+		vars["below_total_r"] = fmt.Sprintf("%d", belowTotals[4])
+	}
 
 	template := "templates/gem.html"
 	newFile := fmt.Sprintf("o-%s-gem.html", chain)
