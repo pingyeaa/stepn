@@ -98,12 +98,12 @@ func main() {
 		// 不加服务器临时方案
 		if chain == "104" {
 			chain = "101"
-			time.Sleep(time.Second * 200)
+			time.Sleep(time.Second * 150)
 		} else if chain == "101" {
 			chain = "104"
-			time.Sleep(time.Second * 200)
+			time.Sleep(time.Second * 150)
 		} else {
-			time.Sleep(time.Second * 300)
+			time.Sleep(time.Second * 200)
 		}
 	}
 }
