@@ -27,6 +27,7 @@ var sneakerPrice = map[int]int{}
 var newSneakerPrice = map[int]int{}
 var itemStatic = map[int]int{}
 var chain = "104"
+var sessionId = ""
 var genesShoes []*Shoe
 var genesis23w []*Shoe
 var sneakerMinPrice float64 = 0
@@ -56,6 +57,12 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 	chain = key.String()
+
+	key, err = cfg.Section("stepn").GetKey("session_id")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	sessionId = key.String()
 
 	for {
 
@@ -1150,42 +1157,18 @@ func sneakerTotal(types int, quantity int) int {
 	for {
 		if page == 0 {
 			if types == 501 {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=true&sessionID=%s", types, quantity, chain, page, sessionId)
 			} else {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true&sessionID=%s", types, quantity, chain, page, sessionId)
 			}
 		} else {
 			if types == 501 {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&gType=%d&chain=%s&page=%d&refresh=false&sessionID=%s", types, quantity, chain, page, sessionId)
 			} else {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=false&sessionID=%s", types, quantity, chain, page, sessionId)
 			}
 		}
-		req, err := http.NewRequest("GET", url, nil)
-		if err != nil {
-			fmt.Println(err.Error())
-			return 0
-		}
-		req.Header.Set("cookie", cookie)
-		req.Header.Set("accept", "application/json")
-		req.Header.Set("accept-language", "zh-CN")
-		req.Header.Set("host", "api.stepn.com")
-		req.Header.Set("group", "173224989")
-		resp, err := (&http.Client{}).Do(req)
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-		defer resp.Body.Close()
-		respByte, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-		if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
-			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-		}
-		if string(respByte) == `{"code":102001,"msg":"102001"}` {
-			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-		}
+		respByte := StepnRequest(url)
 
 		var orderList OrderList
 		err = json.Unmarshal(respByte, &orderList)
@@ -1266,39 +1249,18 @@ func sneakerTotalDesc(types int, quantity int) {
 	for {
 		if page == 0 {
 			if types == 501 {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=true&sessionID=%s", types, quantity, chain, page, sessionId)
 			} else {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=true&sessionID=%s", types, quantity, chain, page, sessionId)
 			}
 		} else {
 			if types == 501 {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&gType=%d&chain=%s&page=%d&refresh=false&sessionID=%s", types, quantity, chain, page, sessionId)
 			} else {
-				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false", types, quantity, chain, page)
+				url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2002&type=%d&quality=%d&chain=%s&page=%d&refresh=false&sessionID=%s", types, quantity, chain, page, sessionId)
 			}
 		}
-		req, err := http.NewRequest("GET", url, nil)
-		if err != nil {
-			fmt.Println(err.Error())
-			return
-		}
-		req.Header.Set("cookie", cookie)
-		req.Header.Set("accept", "application/json")
-		req.Header.Set("accept-language", "zh-CN")
-		req.Header.Set("host", "api.stepn.com")
-		req.Header.Set("group", "173224989")
-		resp, err := (&http.Client{}).Do(req)
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-		defer resp.Body.Close()
-		respByte, _ := ioutil.ReadAll(resp.Body)
-		if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
-			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-		}
-		if string(respByte) == `{"code":102001,"msg":"102001"}` {
-			log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-		}
+		respByte := StepnRequest(url)
 
 		var orderList OrderList
 		err = json.Unmarshal(respByte, &orderList)
@@ -1381,28 +1343,8 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 
 	time.Sleep(time.Second * 1)
 
-	var url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true", types, quantity, chain, 0)
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	req.Header.Set("cookie", cookie)
-	req.Header.Set("accept", "application/json")
-	req.Header.Set("accept-language", "zh-CN")
-	req.Header.Set("host", "api.stepn.com")
-	req.Header.Set("group", "173224989")
-	resp, err := (&http.Client{}).Do(req)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	defer resp.Body.Close()
-	respByte, _ := ioutil.ReadAll(resp.Body)
-	if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
-		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-	}
-	if string(respByte) == `{"code":102001,"msg":"102001"}` {
-		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
-	}
+	var url = fmt.Sprintf("https://api.stepn.com/run/orderlist?order=2001&type=%d&quality=%d&chain=%s&page=%d&refresh=true&sessionID=%s", types, quantity, chain, 0, sessionId)
+	respByte := StepnRequest(url)
 
 	var orderList OrderList
 	err = json.Unmarshal(respByte, &orderList)
@@ -1420,6 +1362,40 @@ func floorPrice(types int, quantity int, zeroNum int) float64 {
 	fmt.Print(".")
 
 	return price
+}
+
+func StepnRequest(url string) []byte {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	req.Header.Set("cookie", cookie)
+	req.Header.Set("method", "GET")
+	req.Header.Set("accept", "application/json")
+	req.Header.Set("accept-encoding", "gzip, deflate, br")
+	//req.Header.Set(":scheme", "https")
+	req.Header.Set("accept-language", "en,zh-CN;q=0.9,zh;q=0.8")
+	//req.Header.Set(":authority", "m.stepn.com")
+	req.Header.Set("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
+	req.Header.Set("sec-ch-ua", `".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"`)
+	req.Header.Set("sec-ch-ua-mobile", `?0`)
+	req.Header.Set("sec-ch-ua-platform", `macOS`)
+	req.Header.Set("sec-fetch-dest", `empty`)
+	req.Header.Set("sec-fetch-mode", `cors`)
+	req.Header.Set("sec-fetch-site", `same-site`)
+	resp, err := (&http.Client{}).Do(req)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	defer resp.Body.Close()
+	respByte, _ := ioutil.ReadAll(resp.Body)
+	if string(respByte) == `{"code":102001,"msg":"Player hasnt logged in yet"}` {
+		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+	}
+	if string(respByte) == `{"code":102001,"msg":"102001"}` {
+		log.Fatalln(`{"code":102001,"msg":"Player hasnt logged in yet"}`)
+	}
+	return respByte
 }
 
 func comparePrice(price1 float64, price2 float64) float64 {
@@ -1464,7 +1440,7 @@ func PushFile(filePath string, webhook string) {
 		fmt.Println(err)
 		return
 	}
-	req.Header.Add("User-Agent", "apifox/1.0.0 (https://www.apifox.cn)")
+	req.Header.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
 
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	res, err := client.Do(req)
