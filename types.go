@@ -5,6 +5,13 @@ type OrderList struct {
 	Data []*Shoe `json:"data"`
 }
 
+type LoginResp struct {
+	Code int `json:"code"`
+	Data struct {
+		SessionID string `json:"sessionID"`
+	} `json:"data"`
+}
+
 type Shoe struct {
 	ID        int    `json:"id"`
 	TypeID    int    `json:"type_id"`

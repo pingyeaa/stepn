@@ -243,6 +243,14 @@ func GMTPriceForSol() float64 {
 	return GetTokenPriceForSol("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx")
 }
 
+func GSTPriceForEth() float64 {
+	return GetTokenPriceForSol("AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB")
+}
+
+func GMTPriceForEth() float64 {
+	return GetTokenPriceForSol("7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx")
+}
+
 func BnbPrice() float64 {
 	return GetCoinPrice("binancecoin")
 }
@@ -261,6 +269,15 @@ func CalcMintProfitForBSC(sneakerFloor float64, scrollFloor float64) (float64, f
 }
 
 func CalcMintProfitForSol(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
+	gstPrice := GSTPriceForSol()
+	gmtPrice := GMTPriceForSol()
+	solPrice := SolPrice()
+	total := gstPrice*360 + gmtPrice*40 + scrollFloor*2*gmtPrice + 20*gstPrice + 10*gmtPrice
+	profit := sneakerFloor*solPrice*0.94 - total
+	return gstPrice, gmtPrice, fmt.Sprintf("%.2fx%.2fx0.94-(%.4fx360+%.4fx40+%.4fx2x%.2f)-(20x%.4f+10x%.4f)=%.2fusd", sneakerFloor, solPrice, gstPrice, gmtPrice, gmtPrice, scrollFloor, gstPrice, gmtPrice, profit)
+}
+
+func CalcMintProfitForETH(sneakerFloor float64, scrollFloor float64) (float64, float64, string) {
 	gstPrice := GSTPriceForSol()
 	gmtPrice := GMTPriceForSol()
 	solPrice := SolPrice()
@@ -349,7 +366,6 @@ func Get(url string) []byte {
 		fmt.Println(err.Error())
 		return nil
 	}
-	req.Header.Set("cookie", cookie)
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("accept-language", "zh-CN")
 	req.Header.Set("host", "apilb.stepn.com")

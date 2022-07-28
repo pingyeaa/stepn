@@ -21,7 +21,8 @@ import (
 )
 
 var err error
-var cookie = ""
+
+//var cookie = ""
 var cfg *ini.File
 var sneakerPrice = map[int]int{}
 var newSneakerPrice = map[int]int{}
@@ -32,6 +33,7 @@ var genesShoes []*Shoe
 var genesis23w []*Shoe
 var sneakerMinPrice float64 = 0
 var scrollMinPrice float64 = 0
+var username = ""
 
 var sneakerNumVars = map[string]string{}
 var sneakerMintVars = map[string]string{}
@@ -46,25 +48,27 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 
-	key, err := cfg.Section("stepn").GetKey("cookie")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	cookie = key.String()
+	//key, err := cfg.Section("stepn").GetKey("cookie")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	//cookie = key.String()
 
-	key, err = cfg.Section("stepn").GetKey("chain")
+	key, err := cfg.Section("stepn").GetKey("chain")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
 	chain = key.String()
 
-	key, err = cfg.Section("stepn").GetKey("session_id")
+	key, err = cfg.Section("stepn").GetKey("username")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	sessionId = key.String()
+	username = key.String()
 
 	for {
+
+		Login()
 
 		newSneakerPrice = map[int]int{}
 		genesShoes = []*Shoe{}
@@ -113,6 +117,25 @@ func main() {
 			time.Sleep(time.Second * 200)
 		}
 	}
+}
+
+func Login() {
+	token, err := os.ReadFile("/root/stepn-session/session.txt")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	log.Println("token", token)
+	url := fmt.Sprintf("https://api.stepn.com/run/login?account=%s&password=%s&type=3&deviceInfo=web", username, token)
+	fmt.Println(url)
+	resp := Get(url)
+	fmt.Println(string(resp))
+	var loginResp LoginResp
+	err = json.Unmarshal(resp, &loginResp)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	sessionId = loginResp.Data.SessionID
+	fmt.Println("sessionid", sessionId)
 }
 
 func HandleGenesis() {
@@ -1369,7 +1392,7 @@ func StepnRequest(url string) []byte {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	req.Header.Set("cookie", cookie)
+	//req.Header.Set("cookie", cookie)
 	req.Header.Set("method", "GET")
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("accept-encoding", "gzip, deflate, br")

@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"testing"
 )
 
@@ -196,24 +198,47 @@ func TestGetFileContent(t *testing.T) {
 	//ReplaceVar(template, vars, newFile)
 	//Html2Image(newFile, newImage)
 	//PushFile(newImage)
+	//
+	//nfts := map[int]*Shoe{
+	//	1: {
+	//		GType:     1,
+	//		Otd:       1,
+	//		SellPrice: 10000,
+	//	},
+	//	2: {
+	//		GType:     2,
+	//		Otd:       2,
+	//		SellPrice: 12300000,
+	//	},
+	//	3: {
+	//		GType:     3,
+	//		Otd:       3,
+	//		SellPrice: 12300000,
+	//	},
+	//}
+	//p, o := GetPriceBelowNextPrice(nfts)
+	//fmt.Println(p, o)
+}
 
-	nfts := map[int]*Shoe{
-		1: {
-			GType:     1,
-			Otd:       1,
-			SellPrice: 10000,
-		},
-		2: {
-			GType:     2,
-			Otd:       2,
-			SellPrice: 12300000,
-		},
-		3: {
-			GType:     3,
-			Otd:       3,
-			SellPrice: 12300000,
-		},
+func TestGetFileContent1(t *testing.T) {
+
+	url := "https://api.opensea.io/api/v1/bundles?asset_contract_address=0x1E4AFE0c027d4F14FdbA4254eFC1A3ac2f7d49b5&limit=20&offset=0"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatalln(err.Error())
 	}
-	p, o := GetPriceBelowNextPrice(nfts)
-	fmt.Println(p, o)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+func TestLogin(t *testing.T) {
+	Login()
 }
