@@ -20,9 +20,9 @@ func GemTotal(gType int) int {
 
 	for {
 		if page == 0 {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=true", gType, chain, page)
+			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=true&sessionID=%s", gType, chain, page, sessionId)
 		} else {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=false", gType, chain, page)
+			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=false&sessionID=%s", gType, chain, page, sessionId)
 		}
 		respByte := Get(url)
 		var orderList OrderList
@@ -63,9 +63,9 @@ func GemTotalDesc(gType int, gemCount map[int]*Shoe) map[int]*Shoe {
 
 	for {
 		if page == 0 {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=501&gType=%d&chain=%s&page=%d&refresh=true", gType, chain, page)
+			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=501&gType=%d&chain=%s&page=%d&refresh=true&sessionID=%s", gType, chain, page, sessionId)
 		} else {
-			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=501&gType=%d&chain=%s&page=%d&refresh=false", gType, chain, page)
+			url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2002&type=501&gType=%d&chain=%s&page=%d&refresh=false&sessionID=%s", gType, chain, page, sessionId)
 		}
 		respByte := Get(url)
 		var orderList OrderList
@@ -109,7 +109,7 @@ func GemFloorPrice(gType int) float64 {
 
 	time.Sleep(time.Second * 1)
 
-	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=true", gType, chain, 0)
+	var url = fmt.Sprintf("https://apilb.stepn.com/run/orderlist?order=2001&type=501&gType=%d&chain=%s&page=%d&refresh=true&sessionID=%s", gType, chain, 0, sessionId)
 	respByte := Get(url)
 
 	var orderList OrderList
